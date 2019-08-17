@@ -6,11 +6,8 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MediaApi", "src\MediaApi\MediaApi.vcxproj", "{B0F4C43C-1291-4128-B98C-25FEFCD22020}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpPlayer", "src\SharpPlayer\SharpPlayer.csproj", "{26F37962-D673-4362-A32E-F18D0A858C85}"
-	ProjectSection(ProjectDependencies) = postProject
-		{28A9E2C4-5DFE-4ECA-90C6-352C0018F237} = {28A9E2C4-5DFE-4ECA-90C6-352C0018F237}
-	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MediaCore", "src\MediaCore\MediaCore.vcxproj", "{28A9E2C4-5DFE-4ECA-90C6-352C0018F237}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BuildRustProjects", "src\BuildRustProjects.vcxproj", "{28A9E2C4-5DFE-4ECA-90C6-352C0018F237}"
 	ProjectSection(ProjectDependencies) = postProject
 		{B0F4C43C-1291-4128-B98C-25FEFCD22020} = {B0F4C43C-1291-4128-B98C-25FEFCD22020}
 	EndProjectSection

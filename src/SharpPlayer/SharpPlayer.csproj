@@ -17,8 +17,4 @@
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
 
-  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="xcopy ..\..\target\x64\Debug\*.dll ..\..\target\x64\Debug\netcoreapp3.0 /y&#xD;&#xA;xcopy ..\..\target\x64\Release\*.dll ..\..\target\x64\Release\netcoreapp3.0 /y" />
-  </Target>
-
 </Project>
