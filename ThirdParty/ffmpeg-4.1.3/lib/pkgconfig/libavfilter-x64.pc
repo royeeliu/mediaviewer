@@ -1,0 +1,14 @@
+prefix=./msvc_build_x64
+exec_prefix=${prefix}
+libdir=./msvc_build_x64/lib
+includedir=./msvc_build_x64/include
+
+Name: libavfilter-x64
+Description: FFmpeg audio/video filtering library
+Version: 7.40.101
+Requires: 
+Requires.private: libswscale-x64 >= 5.3.100, libavformat-x64 >= 58.20.100, libavcodec-x64 >= 58.35.100, libswresample-x64 >= 3.3.100, libavutil-x64 >= 56.22.100
+Conflicts:
+Libs: -L${libdir}  -lavfilter-x64 
+Libs.private: 
+Cflags: -I${includedir}

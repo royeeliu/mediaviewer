@@ -1,0 +1,14 @@
+prefix=./msvc_build_x64
+exec_prefix=${prefix}
+libdir=./msvc_build_x64/lib
+includedir=./msvc_build_x64/include
+
+Name: libswscale-x64
+Description: FFmpeg image rescaling library
+Version: 5.3.100
+Requires: 
+Requires.private: libavutil-x64 >= 56.22.100
+Conflicts:
+Libs: -L${libdir}  -lswscale-x64 
+Libs.private: 
+Cflags: -I${includedir}

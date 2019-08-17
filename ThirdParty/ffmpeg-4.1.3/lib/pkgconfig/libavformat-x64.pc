@@ -1,0 +1,14 @@
+prefix=./msvc_build_x64
+exec_prefix=${prefix}
+libdir=./msvc_build_x64/lib
+includedir=./msvc_build_x64/include
+
+Name: libavformat-x64
+Description: FFmpeg container format library
+Version: 58.20.100
+Requires: 
+Requires.private: libavcodec-x64 >= 58.35.100, libswresample-x64 >= 3.3.100, libavutil-x64 >= 56.22.100
+Conflicts:
+Libs: -L${libdir}  -lavformat-x64 
+Libs.private: secur32.lib ws2_32.lib
+Cflags: -I${includedir}

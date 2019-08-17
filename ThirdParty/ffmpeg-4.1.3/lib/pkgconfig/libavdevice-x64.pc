@@ -1,0 +1,14 @@
+prefix=./msvc_build_x64
+exec_prefix=${prefix}
+libdir=./msvc_build_x64/lib
+includedir=./msvc_build_x64/include
+
+Name: libavdevice-x64
+Description: FFmpeg device handling library
+Version: 58.5.100
+Requires: 
+Requires.private: libavfilter-x64 >= 7.40.101, libswscale-x64 >= 5.3.100, libavformat-x64 >= 58.20.100, libavcodec-x64 >= 58.35.100, libswresample-x64 >= 3.3.100, libavutil-x64 >= 56.22.100
+Conflicts:
+Libs: -L${libdir}  -lavdevice-x64 
+Libs.private: psapi.lib ole32.lib strmiids.lib uuid.lib oleaut32.lib shlwapi.lib gdi32.lib vfw32.lib
+Cflags: -I${includedir}

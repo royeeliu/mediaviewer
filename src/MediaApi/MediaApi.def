@@ -1,0 +1,6 @@
+﻿LIBRARY "MediaApi.dll"
+
+EXPORTS
+
+MAPI_MediaSource_Create
+MAPI_MediaSource_Destroy

@@ -1,0 +1,67 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29201.188
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MediaApi", "src\MediaApi\MediaApi.vcxproj", "{B0F4C43C-1291-4128-B98C-25FEFCD22020}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpPlayer", "src\SharpPlayer\SharpPlayer.csproj", "{26F37962-D673-4362-A32E-F18D0A858C85}"
+	ProjectSection(ProjectDependencies) = postProject
+		{28A9E2C4-5DFE-4ECA-90C6-352C0018F237} = {28A9E2C4-5DFE-4ECA-90C6-352C0018F237}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MediaCore", "src\MediaCore\MediaCore.vcxproj", "{28A9E2C4-5DFE-4ECA-90C6-352C0018F237}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B0F4C43C-1291-4128-B98C-25FEFCD22020} = {B0F4C43C-1291-4128-B98C-25FEFCD22020}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B0F4C43C-1291-4128-B98C-25FEFCD22020}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{B0F4C43C-1291-4128-B98C-25FEFCD22020}.Debug|x64.ActiveCfg = Debug|x64
+		{B0F4C43C-1291-4128-B98C-25FEFCD22020}.Debug|x64.Build.0 = Debug|x64
+		{B0F4C43C-1291-4128-B98C-25FEFCD22020}.Debug|x86.ActiveCfg = Debug|Win32
+		{B0F4C43C-1291-4128-B98C-25FEFCD22020}.Debug|x86.Build.0 = Debug|Win32
+		{B0F4C43C-1291-4128-B98C-25FEFCD22020}.Release|Any CPU.ActiveCfg = Release|Win32
+		{B0F4C43C-1291-4128-B98C-25FEFCD22020}.Release|x64.ActiveCfg = Release|x64
+		{B0F4C43C-1291-4128-B98C-25FEFCD22020}.Release|x64.Build.0 = Release|x64
+		{B0F4C43C-1291-4128-B98C-25FEFCD22020}.Release|x86.ActiveCfg = Release|Win32
+		{B0F4C43C-1291-4128-B98C-25FEFCD22020}.Release|x86.Build.0 = Release|Win32
+		{26F37962-D673-4362-A32E-F18D0A858C85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26F37962-D673-4362-A32E-F18D0A858C85}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26F37962-D673-4362-A32E-F18D0A858C85}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{26F37962-D673-4362-A32E-F18D0A858C85}.Debug|x64.Build.0 = Debug|Any CPU
+		{26F37962-D673-4362-A32E-F18D0A858C85}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{26F37962-D673-4362-A32E-F18D0A858C85}.Debug|x86.Build.0 = Debug|Any CPU
+		{26F37962-D673-4362-A32E-F18D0A858C85}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26F37962-D673-4362-A32E-F18D0A858C85}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26F37962-D673-4362-A32E-F18D0A858C85}.Release|x64.ActiveCfg = Release|Any CPU
+		{26F37962-D673-4362-A32E-F18D0A858C85}.Release|x64.Build.0 = Release|Any CPU
+		{26F37962-D673-4362-A32E-F18D0A858C85}.Release|x86.ActiveCfg = Release|Any CPU
+		{26F37962-D673-4362-A32E-F18D0A858C85}.Release|x86.Build.0 = Release|Any CPU
+		{28A9E2C4-5DFE-4ECA-90C6-352C0018F237}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{28A9E2C4-5DFE-4ECA-90C6-352C0018F237}.Debug|x64.ActiveCfg = Debug|x64
+		{28A9E2C4-5DFE-4ECA-90C6-352C0018F237}.Debug|x64.Build.0 = Debug|x64
+		{28A9E2C4-5DFE-4ECA-90C6-352C0018F237}.Debug|x86.ActiveCfg = Debug|Win32
+		{28A9E2C4-5DFE-4ECA-90C6-352C0018F237}.Debug|x86.Build.0 = Debug|Win32
+		{28A9E2C4-5DFE-4ECA-90C6-352C0018F237}.Release|Any CPU.ActiveCfg = Release|Win32
+		{28A9E2C4-5DFE-4ECA-90C6-352C0018F237}.Release|x64.ActiveCfg = Release|x64
+		{28A9E2C4-5DFE-4ECA-90C6-352C0018F237}.Release|x64.Build.0 = Release|x64
+		{28A9E2C4-5DFE-4ECA-90C6-352C0018F237}.Release|x86.ActiveCfg = Release|Win32
+		{28A9E2C4-5DFE-4ECA-90C6-352C0018F237}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {923CA269-D247-4666-BF63-BCF9F8ED57FC}
+	EndGlobalSection
+EndGlobal
