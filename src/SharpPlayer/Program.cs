@@ -12,11 +12,13 @@ namespace SharpPlayer
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
+            Common.Console.AllocConsole();
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MovieForm());
+            Application.Run(new MovieForm(args));
         }
     }
 }

@@ -65,9 +65,11 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\CppCommonProperty.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\CppCommonProperty.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -91,12 +93,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\;..\ThirdParty\SDL2-2.0.10\include;C:\Develop\MultimediaProjects\ffmpeg-4.1.3</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\;..\..\thirdparty\SDL2-2.0.10\include;C:\Develop\MultimediaProjects\ffmpeg-4.1.3</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\ThirdParty\ffmpeg-4.1.3\bin;..\ThirdParty\SDL2-2.0.10\lib\x64</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\thirdparty\ffmpeg-4.1.3\bin;..\..\thirdparty\SDL2-2.0.10\lib\x64</AdditionalLibraryDirectories>
       <AdditionalDependencies>avcodec-x64.lib;avformat-x64.lib;avutil-x64.lib;swscale-x64.lib;swresample-x64.lib;avfilter-x64.lib;avdevice-x64.lib;SDL2.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -145,14 +147,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\;..\ThirdParty\SDL2-2.0.10\include;C:\Develop\MultimediaProjects\ffmpeg-4.1.3</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\;..\..\thirdparty\SDL2-2.0.10\include;C:\Develop\MultimediaProjects\ffmpeg-4.1.3</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\ThirdParty\ffmpeg-4.1.3\bin;..\ThirdParty\SDL2-2.0.10\lib\x64</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\thirdparty\ffmpeg-4.1.3\bin;..\..\thirdparty\SDL2-2.0.10\lib\x64</AdditionalLibraryDirectories>
       <AdditionalDependencies>avcodec-x64.lib;avformat-x64.lib;avutil-x64.lib;swscale-x64.lib;swresample-x64.lib;avfilter-x64.lib;avdevice-x64.lib;SDL2.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>

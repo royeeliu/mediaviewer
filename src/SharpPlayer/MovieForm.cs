@@ -12,10 +12,40 @@ namespace SharpPlayer
 {
     public partial class MovieForm : Form
     {
-        public MovieForm()
+        private MediaCore.CorePlayer player;
+        private string mediaFileName;
+
+        public MovieForm(string[] args)
         {
             InitializeComponent();
+
+            if (args.Length == 1)
+            {
+                mediaFileName = args[0];
+            }
         }
 
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            player = new MediaCore.CorePlayer(this);
+
+            if (!string.IsNullOrEmpty(mediaFileName))
+            {
+                LoadFile(mediaFileName);
+            }
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+            player.Dispose();
+            player = null;
+        }
+
+        private void LoadFile(string fileName)
+        {
+            player.LoadFile(fileName);
+        }
     }
 }
