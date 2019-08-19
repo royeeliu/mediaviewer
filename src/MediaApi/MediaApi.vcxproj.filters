@@ -51,6 +51,15 @@
     <ClInclude Include="..\Include\MediaApi\Error.h">
       <Filter>Include\MediaApi</Filter>
     </ClInclude>
+    <ClInclude Include="VideoRenderer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\MediaApi\Types.h">
+      <Filter>Include\MediaApi</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -68,10 +77,17 @@
     <ClCompile Include="pch.cpp">
       <Filter>Common</Filter>
     </ClCompile>
+    <ClCompile Include="VideoRenderer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="MediaApi.def">
       <Filter>源文件</Filter>
     </None>
+    <None Include="cpp.hint" />
   </ItemGroup>
 </Project>
