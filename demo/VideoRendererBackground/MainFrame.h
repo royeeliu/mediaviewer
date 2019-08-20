@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Resource.h"
+#include "Include/MediaApi.h"
 
 class MainFrame
 	: public CWindowImpl<MainFrame, CWindow, CFrameWinTraits>
@@ -31,4 +32,9 @@ private:
 
 private:
 	void UpdataLayout();
+	void ShowErrorMessage(const wchar_t* format, ...);
+
+private:
+	MAPI_View			m_view{};
+	MAPI_VideoRenderer* m_renderer;
 };

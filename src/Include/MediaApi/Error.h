@@ -8,6 +8,7 @@ enum MAPI_ERROR_CODE
 	MAPIERR_FAIL				= -1,	// 无特定含义的一般性失败
 	MAPIERR_OUT_OF_MEMORY		= -2,	// 内存不足
 	MAPIERR_INVALID_CALL		= -3,	// 错误的调用
+	MAPIERR_NOT_IMPL			= -4,	// 未实现
 };
 
 struct MAPI_Error

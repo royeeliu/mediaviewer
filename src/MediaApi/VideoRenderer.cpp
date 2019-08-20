@@ -15,6 +15,7 @@ VideoRenderer::~VideoRenderer()
 void VideoRenderer::Initialize(std::unique_ptr<ImageView>&& view, Error& err)
 {
 	m_view = std::move(view);
+	err.code = MAPIERR_NOT_IMPL;
 }
 
 };
