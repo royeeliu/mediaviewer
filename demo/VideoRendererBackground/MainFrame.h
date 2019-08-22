@@ -35,6 +35,6 @@ private:
 	void ShowErrorMessage(const wchar_t* format, ...);
 
 private:
-	MAPI_View			m_view{};
-	MAPI_VideoRenderer* m_renderer;
+	MAPI_TargetView			m_view{};
+	MAPI_Presenter* m_renderer;
 };

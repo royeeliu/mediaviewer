@@ -1,9 +1,9 @@
 #include "pch.h"
-#include "ImageView.h"
+#include "TargetView.h"
 
 namespace mapi {
 
-TargetView::TargetView(View const* view)
+TargetView::TargetView(MAPI_TargetView const* view)
 	: m_view(view)
 {
 }

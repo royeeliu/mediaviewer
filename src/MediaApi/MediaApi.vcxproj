@@ -110,7 +110,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
@@ -161,7 +161,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -194,20 +194,25 @@
     <ClInclude Include="..\Include\MediaApi.h" />
     <ClInclude Include="..\Include\MediaApi\Config.h" />
     <ClInclude Include="..\Include\MediaApi\Error.h" />
+    <ClInclude Include="..\Include\MediaApi\Graphics.h" />
     <ClInclude Include="..\Include\MediaApi\Types.h" />
-    <ClInclude Include="ImageView.h" />
+    <ClInclude Include="Graphics.h" />
+    <ClInclude Include="TargetView.h" />
     <ClInclude Include="ffmpeg.h" />
+    <ClInclude Include="RenderTarget.h" />
     <ClInclude Include="Types.h" />
     <ClInclude Include="MediaSource.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Diagnisis.h" />
-    <ClInclude Include="VideoRenderer.h" />
+    <ClInclude Include="Presenter.h" />
+    <ClInclude Include="Uncopyable.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Diagnisis.cpp" />
     <ClCompile Include="dllmain.cpp" />
-    <ClCompile Include="ImageView.cpp" />
+    <ClCompile Include="Graphics.cpp" />
+    <ClCompile Include="TargetView.cpp" />
     <ClCompile Include="MediaApi.cpp" />
     <ClCompile Include="MediaSource.cpp" />
     <ClCompile Include="pch.cpp">
@@ -216,7 +221,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="VideoRenderer.cpp" />
+    <ClCompile Include="RenderTarget.cpp" />
+    <ClCompile Include="uuids.cpp" />
+    <ClCompile Include="Presenter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />

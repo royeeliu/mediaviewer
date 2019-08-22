@@ -22,6 +22,9 @@
     <Filter Include="Include\MediaApi">
       <UniqueIdentifier>{72aa7ba0-955d-4fa6-865f-a3ad94b2016b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Graphics">
+      <UniqueIdentifier>{787e7c6a-8b20-4b64-bfd2-ac657f336d34}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MediaSource.h">
@@ -51,14 +54,26 @@
     <ClInclude Include="..\Include\MediaApi\Error.h">
       <Filter>Include\MediaApi</Filter>
     </ClInclude>
-    <ClInclude Include="VideoRenderer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="ImageView.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="..\Include\MediaApi\Types.h">
       <Filter>Include\MediaApi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\MediaApi\Graphics.h">
+      <Filter>Include\MediaApi</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderTarget.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Presenter.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="TargetView.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Uncopyable.h">
+      <Filter>Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -77,11 +92,20 @@
     <ClCompile Include="pch.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="VideoRenderer.cpp">
+    <ClCompile Include="uuids.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="ImageView.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="RenderTarget.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Presenter.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="TargetView.cpp">
+      <Filter>Graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

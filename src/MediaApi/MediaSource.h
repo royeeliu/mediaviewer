@@ -1,10 +1,11 @@
 #pragma once
 
 #include "Types.h"
+#include "Uncopyable.h"
 
 namespace mapi {
 
-class MediaSource
+class MediaSource : Uncopyable
 {
 public:
 	MediaSource();

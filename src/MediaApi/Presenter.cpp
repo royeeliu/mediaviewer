@@ -1,7 +1,7 @@
 
 #include "pch.h"
 #include "Presenter.h"
-#include "ImageView.h"
+#include "TargetView.h"
 #include "Diagnisis.h"
 #include <mfapi.h>
 
@@ -32,7 +32,7 @@ Presenter::~Presenter()
 	}
 }
 
-void Presenter::Initialize(std::unique_ptr<ImageView>&& view, Error& err)
+void Presenter::Initialize(std::unique_ptr<TargetView>&& view, Error& err)
 {
 	if (m_view != nullptr)
 	{

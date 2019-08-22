@@ -5,16 +5,16 @@
 
 namespace mapi {
 
-class ImageView
+class TargetView
 {
 public:
-	ImageView(View const* view);
-	~ImageView();
+	TargetView(MAPI_TargetView const* view);
+	~TargetView();
 
 	HWND GetHwnd();
 
 private:
-	View const* m_view;
+	MAPI_TargetView const* m_view;
 };
 
 };

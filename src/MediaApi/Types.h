@@ -7,9 +7,14 @@ namespace mapi {
 
 using Error = MAPI_Error;
 using ERROR_CODE = MAPI_ERROR_CODE;
-using View = MAPI_View;
+using Rect = MAPI_Rect;
 
-class ImageView;
+namespace Color {
+	using ARGB = MAPI_Color_ARGB;
+}
+
+class TargetView;
+class RenderTarget;
 
 } // End of namespace
 

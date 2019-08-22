@@ -18,10 +18,10 @@ LRESULT MainFrame::OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHand
 	UpdataLayout();
 
 	m_view.handle = m_hWnd;
-	m_renderer = MAPI_VideoRenderer_Create();
+	m_renderer = MAPI_Presenter_Create();
 
 	MAPI_Error err{};
-	MAPI_VideoRenderer_Initialize(m_renderer, &m_view, &err);
+	MAPI_Presenter_Initialize(m_renderer, &m_view, &err);
 
 	if (err.code != MAPI_NO_ERROR)
 	{
@@ -35,7 +35,7 @@ LRESULT MainFrame::OnDestroy(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHan
 {
 	if (m_renderer != nullptr)
 	{
-		MAPI_VideoRenderer_Destroy(m_renderer);
+		MAPI_Presenter_Destroy(m_renderer);
 		m_renderer = nullptr;
 	}
 
@@ -48,6 +48,11 @@ LRESULT MainFrame::OnPaint(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandl
 	PAINTSTRUCT ps;
 	HDC	hdc = BeginPaint(&ps);
 	EndPaint(&ps);
+
+	if (m_renderer)
+	{
+		//MAPI_Presenter_RepaintVideo(m_renderer);
+	}
 
 	return 0;
 }
