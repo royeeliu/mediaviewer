@@ -8,16 +8,21 @@ namespace mapi {
 class Graphics : Uncopyable
 {
 public:
-	Graphics() = default;
+	Graphics();
 	~Graphics();
 
 	void Initialize(std::unique_ptr<TargetView>&& target_view, Error& err) noexcept;
-	std::unique_ptr<RenderTarget> BeginRendering(Error& err) noexcept;
-	void EndRendering(std::unique_ptr<RenderTarget>&& target) noexcept;
+	RenderTarget* BeginRendering(Error& err) noexcept;
+	void EndRendering(RenderTarget*& target, Error& err) noexcept;
 
 private:
-	std::unique_ptr<TargetView>		m_view;
+	void Clear();
+
+private:
 	uint32_t						m_initializeThreadId = 0;
+	std::unique_ptr<TargetView>		m_view;
+	std::unique_ptr<DX11Graphics>	m_graphics;
+	std::unique_ptr<RenderTarget>	m_renderTarget;
 };
 
 };

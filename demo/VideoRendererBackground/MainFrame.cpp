@@ -18,10 +18,10 @@ LRESULT MainFrame::OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHand
 	UpdataLayout();
 
 	m_view.handle = m_hWnd;
-	m_renderer = MAPI_Presenter_Create();
+	m_graphics = MAPI_Graphics_Create();
 
 	MAPI_Error err{};
-	MAPI_Presenter_Initialize(m_renderer, &m_view, &err);
+	MAPI_Graphics_Initialize(m_graphics, &m_view, &err);
 
 	if (err.code != MAPI_NO_ERROR)
 	{
@@ -33,10 +33,9 @@ LRESULT MainFrame::OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHand
 
 LRESULT MainFrame::OnDestroy(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
-	if (m_renderer != nullptr)
+	if (m_graphics != nullptr)
 	{
-		MAPI_Presenter_Destroy(m_renderer);
-		m_renderer = nullptr;
+		MAPI_Graphics_Destroy(&m_graphics);
 	}
 
 	::PostQuitMessage(0);
@@ -47,14 +46,16 @@ LRESULT MainFrame::OnPaint(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandl
 {
 	PAINTSTRUCT ps;
 	HDC	hdc = BeginPaint(&ps);
+	Render();
 	EndPaint(&ps);
 
-	if (m_renderer)
-	{
-		//MAPI_Presenter_RepaintVideo(m_renderer);
-	}
-
 	return 0;
+}
+
+LRESULT MainFrame::OnEraseBkgnd(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+{
+	Render();
+	return 1L;
 }
 
 LRESULT MainFrame::OnSize(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
@@ -110,6 +111,27 @@ void MainFrame::ShowErrorMessage(const wchar_t* format, ...)
 	va_end(args);
 
 	::MessageBox(m_hWnd, buffer, L"FAILURE", MB_OK);
+}
+
+void MainFrame::Render()
+{
+	if (!m_graphics)
+	{
+		return;
+	}
+
+	MAPI_Error err{};
+	MAPI_RenderTarget* target = MAPI_Graphics_BeginRender(m_graphics, &err);
+
+	if (err.code != MAPI_NO_ERROR)
+	{
+		return;
+	}
+
+	MAPI_Color_ARGB color{ 255, 255, 0, 0 };
+	MAPI_RenderTarget_FillColor(target, &color, nullptr);
+
+	MAPI_Graphic_EndRender(m_graphics, &target, &err);
 }
 
 

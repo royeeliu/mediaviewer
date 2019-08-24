@@ -28,11 +28,17 @@ struct MediaStruct
 	Class impl;
 };
 
+template<typename T>
+struct MediaStruct<T*>
+{
+	using Class = typename T;
+	T* impl = nullptr;
+};
+
 struct MAPI_MediaSource : MediaStruct<MediaSource> {};
 struct MAPI_Presenter : MediaStruct<Presenter> {};
 struct MAPI_Graphics : MediaStruct<Graphics> {};
-struct MAPI_RenderTarget : MediaStruct<std::unique_ptr<RenderTarget>> {};
-
+struct MAPI_RenderTarget : MediaStruct<RenderTarget*> {};
 
 MEDIA_API MAPI_MediaSource* MAPI_MediaSource_Create() noexcept
 {
@@ -85,7 +91,7 @@ MEDIA_API void MAPI_Graphics_Initialize(MAPI_Graphics* handle, MAPI_TargetView c
 	handle->impl.Initialize(std::make_unique<TargetView>(target_view), *err);
 }
 
-MEDIA_API MAPI_RenderTarget* MAPI_Graphics_BeginRendering(MAPI_Graphics* handle, MAPI_Error* err) noexcept
+MEDIA_API MAPI_RenderTarget* MAPI_Graphics_BeginRender(MAPI_Graphics* handle, MAPI_Error* err) noexcept
 {
 	MAPI_Error err_{ MAPI_NO_ERROR };
 	err = (err != nullptr) ? err : &err_;
@@ -97,14 +103,16 @@ MEDIA_API MAPI_RenderTarget* MAPI_Graphics_BeginRendering(MAPI_Graphics* handle,
 	}
 
 	auto result = new MAPI_RenderTarget{};
-	result->impl = std::move(impl);
+	std::swap(result->impl, impl);
 
 	return result;
 }
 
-MEDIA_API void MAPI_Graphic_EndRendering(MAPI_Graphics* handle, MAPI_RenderTarget** target) noexcept
+MEDIA_API void MAPI_Graphic_EndRender(MAPI_Graphics* handle, MAPI_RenderTarget** target, MAPI_Error* err) noexcept
 {
-	handle->impl.EndRendering(std::move((*target)->impl));
+	MAPI_Error err_{ MAPI_NO_ERROR };
+	err = (err != nullptr) ? err : &err_;
+	handle->impl.EndRendering((*target)->impl, *err);
 	SafeDelete(target);
 }
 

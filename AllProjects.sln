@@ -14,14 +14,14 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BuildRustProjects", "src\Bu
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FFplay", "src\FFplay\FFplay.vcxproj", "{9A43AD71-2D06-4777-8B31-A6F4E2EF1907}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "demo", "demo", "{616147E9-9DF9-426A-B404-8569E9B100A9}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demo", "Demo", "{616147E9-9DF9-426A-B404-8569E9B100A9}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "VideoRendererBackground", "demo\VideoRendererBackground\VideoRendererBackground.vcxproj", "{D36CE410-C33B-4A91-8B6D-DC2560475D7F}"
 	ProjectSection(ProjectDependencies) = postProject
 		{B0F4C43C-1291-4128-B98C-25FEFCD22020} = {B0F4C43C-1291-4128-B98C-25FEFCD22020}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinyPlayer", "TinyPlayer\TinyPlayer.csproj", "{A7DD9369-DC5D-410C-AA86-D1B762286E95}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "App", "App", "{4A4530A1-4C54-4A40-B684-C1263B47D9C8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -85,23 +85,13 @@ Global
 		{D36CE410-C33B-4A91-8B6D-DC2560475D7F}.Release|x64.Build.0 = Release|x64
 		{D36CE410-C33B-4A91-8B6D-DC2560475D7F}.Release|x86.ActiveCfg = Release|Win32
 		{D36CE410-C33B-4A91-8B6D-DC2560475D7F}.Release|x86.Build.0 = Release|Win32
-		{A7DD9369-DC5D-410C-AA86-D1B762286E95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A7DD9369-DC5D-410C-AA86-D1B762286E95}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A7DD9369-DC5D-410C-AA86-D1B762286E95}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{A7DD9369-DC5D-410C-AA86-D1B762286E95}.Debug|x64.Build.0 = Debug|Any CPU
-		{A7DD9369-DC5D-410C-AA86-D1B762286E95}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{A7DD9369-DC5D-410C-AA86-D1B762286E95}.Debug|x86.Build.0 = Debug|Any CPU
-		{A7DD9369-DC5D-410C-AA86-D1B762286E95}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A7DD9369-DC5D-410C-AA86-D1B762286E95}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A7DD9369-DC5D-410C-AA86-D1B762286E95}.Release|x64.ActiveCfg = Release|Any CPU
-		{A7DD9369-DC5D-410C-AA86-D1B762286E95}.Release|x64.Build.0 = Release|Any CPU
-		{A7DD9369-DC5D-410C-AA86-D1B762286E95}.Release|x86.ActiveCfg = Release|Any CPU
-		{A7DD9369-DC5D-410C-AA86-D1B762286E95}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{26F37962-D673-4362-A32E-F18D0A858C85} = {4A4530A1-4C54-4A40-B684-C1263B47D9C8}
+		{9A43AD71-2D06-4777-8B31-A6F4E2EF1907} = {4A4530A1-4C54-4A40-B684-C1263B47D9C8}
 		{D36CE410-C33B-4A91-8B6D-DC2560475D7F} = {616147E9-9DF9-426A-B404-8569E9B100A9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution

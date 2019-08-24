@@ -2,7 +2,7 @@
 #include "pch.h"
 #include "Presenter.h"
 #include "TargetView.h"
-#include "Diagnisis.h"
+#include "Common.h"
 #include <mfapi.h>
 
 #pragma comment(lib, "Mfplat.lib")

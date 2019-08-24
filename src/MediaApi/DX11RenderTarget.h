@@ -2,21 +2,23 @@
 
 #include "Types.h"
 #include "Uncopyable.h"
+#include "DX11Graphics.h"
 
 namespace mapi {
 
-class RenderTarget : Uncopyable
+class DX11RenderTarget : Uncopyable
 {
 public:
 	explicit
-	RenderTarget(std::unique_ptr<DX11RenderTarget>&& target);
-	~RenderTarget() = default;
+	DX11RenderTarget(DX11Graphics const& graphics);
+	~DX11RenderTarget();
 
 	void FillColor(Color::ARGB const& color, Rect const* rect);
 	void Present(Error& err);
 
 private:
-	std::unique_ptr<DX11RenderTarget> m_impl;
+	DX11Graphics const&			m_graphics;
+	CComPtr<ID3D11Texture2D>	m_backBuffer;
 };
 
 };

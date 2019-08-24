@@ -196,6 +196,11 @@
     <ClInclude Include="..\Include\MediaApi\Error.h" />
     <ClInclude Include="..\Include\MediaApi\Graphics.h" />
     <ClInclude Include="..\Include\MediaApi\Types.h" />
+    <ClInclude Include="ComHelper.h" />
+    <ClInclude Include="Common.h" />
+    <ClInclude Include="DirectXHelper.h" />
+    <ClInclude Include="DX11Graphics.h" />
+    <ClInclude Include="DX11RenderTarget.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="TargetView.h" />
     <ClInclude Include="ffmpeg.h" />
@@ -211,6 +216,8 @@
   <ItemGroup>
     <ClCompile Include="Diagnisis.cpp" />
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="DX11Graphics.cpp" />
+    <ClCompile Include="DX11RenderTarget.cpp" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="TargetView.cpp" />
     <ClCompile Include="MediaApi.cpp" />

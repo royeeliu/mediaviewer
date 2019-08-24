@@ -15,8 +15,10 @@ namespace Color {
 
 class TargetView;
 class RenderTarget;
+class DX11Graphics;
+class DX11RenderTarget;
+
 
 } // End of namespace
 
 
-#define RETURN_VOID_IF(exp)		do { if(exp) return; } while(0)

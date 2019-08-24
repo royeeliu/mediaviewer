@@ -25,6 +25,9 @@
     <Filter Include="Graphics">
       <UniqueIdentifier>{787e7c6a-8b20-4b64-bfd2-ac657f336d34}</UniqueIdentifier>
     </Filter>
+    <Filter Include="DX11">
+      <UniqueIdentifier>{7ce04eda-fbc4-40c7-a8f2-6cbf29d60b5b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MediaSource.h">
@@ -75,6 +78,21 @@
     <ClInclude Include="Uncopyable.h">
       <Filter>Common</Filter>
     </ClInclude>
+    <ClInclude Include="ComHelper.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="DX11RenderTarget.h">
+      <Filter>DX11</Filter>
+    </ClInclude>
+    <ClInclude Include="DX11Graphics.h">
+      <Filter>DX11</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXHelper.h">
+      <Filter>DX11</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -106,6 +124,12 @@
     </ClCompile>
     <ClCompile Include="TargetView.cpp">
       <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="DX11Graphics.cpp">
+      <Filter>DX11</Filter>
+    </ClCompile>
+    <ClCompile Include="DX11RenderTarget.cpp">
+      <Filter>DX11</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

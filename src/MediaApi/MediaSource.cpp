@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "MediaSource.h"
-#include "Diagnisis.h"
+#include "Common.h"
 
 namespace mapi {
 

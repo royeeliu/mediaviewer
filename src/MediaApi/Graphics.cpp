@@ -2,9 +2,15 @@
 #include "Graphics.h"
 #include "TargetView.h"
 #include "RenderTarget.h"
-#include "Diagnisis.h"
+#include "DX11Graphics.h"
+#include "DX11RenderTarget.h"
+#include "Common.h"
 
 namespace mapi {
+
+Graphics::Graphics()
+{
+}
 
 Graphics::~Graphics()
 {
@@ -27,18 +33,44 @@ void Graphics::Initialize(std::unique_ptr<TargetView>&& target_view, Error& err)
 
 	m_initializeThreadId = ::GetCurrentThreadId();
 	m_view = std::move(target_view);
+	m_graphics = std::make_unique<DX11Graphics>();
+
+	do
+	{
+		m_graphics->Initialize(m_view->GetHwnd(), err);
+		BREAK_IF(err.code != MAPI_NO_ERROR);
+
+		auto renderTarget = std::make_unique<DX11RenderTarget>(*m_graphics);
+		m_renderTarget = std::make_unique<RenderTarget>(std::move(renderTarget));
+
+	} while (0);
+
+	if (err.code != MAPI_NO_ERROR)
+	{
+		Clear();
+	}
 }
 
-std::unique_ptr<RenderTarget> Graphics::BeginRendering(Error& err) noexcept
+RenderTarget* Graphics::BeginRendering(Error& err) noexcept
 {
 	VERIFY_CURRENT_THREAD_ID_IS(m_initializeThreadId);
-	return std::unique_ptr<RenderTarget>();
+	return m_renderTarget.get();
 }
 
-void Graphics::EndRendering(std::unique_ptr<RenderTarget>&& target_) noexcept
+void Graphics::EndRendering(RenderTarget*& target, Error& err) noexcept
 {
 	VERIFY_CURRENT_THREAD_ID_IS(m_initializeThreadId);
-	auto target = std::move(target_);
+	ENSURE(target != nullptr);
+	ENSURE(target == m_renderTarget.get());
+	target = nullptr;
+	m_renderTarget->Present(err);
+}
+
+void Graphics::Clear()
+{
+	m_renderTarget.reset();
+	m_graphics.reset();
+	m_view.reset();
 }
 
 };
