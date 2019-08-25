@@ -18,10 +18,11 @@ private:
 public:
 	void Initialize(HINSTANCE hinst);
 	void Run(int show);
+	void ShowErrorMessage(const wchar_t* format, ...);
+	
 	HINSTANCE GetInstance() const { return m_hinstance; }
 
 private:
-	CComModule					m_comModule;
 	HINSTANCE					m_hinstance = nullptr;
 	HWND						m_hwndConsole = nullptr;
 	std::unique_ptr<MainFrame>	m_mainFrame;

@@ -11,6 +11,17 @@ MainFrame::~MainFrame()
 {
 }
 
+void MainFrame::SetClientView(CWindow* clientView)
+{
+	m_clientView = clientView;
+	UpdataLayout();
+
+	if (clientView != nullptr)
+	{
+		clientView->ShowWindow(SW_SHOW);
+	}
+}
+
 LRESULT MainFrame::OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
 	ModifyStyleEx(0, WS_EX_ACCEPTFILES);
@@ -23,9 +34,6 @@ LRESULT MainFrame::OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHand
 	//HWND hwndStatusBar = ::CreateWindow(STATUSCLASSNAME, NULL, dwStyle, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, hWnd, (HMENU)IDW_MAINFRAME_STATUS_BAR, NULL, NULL);
 
 	UpdataLayout();
-	::ShowWindow(m_hwndClient, SW_SHOW);
-
-	printf("Hello, World!\n");
 
 	return 0;
 }
@@ -113,36 +121,19 @@ void MainFrame::UpdataLayout()
 	RECT clientRect{};
 	GetClientRect(&clientRect);
 
-	if (m_hwndStatusBar != nullptr && ((DWORD)::GetWindowLong(m_hwndStatusBar, GWL_STYLE) & WS_VISIBLE))
+	if (m_statusBar != nullptr && m_statusBar->IsWindowVisible())
 	{
-		::SendMessage(m_hwndStatusBar, WM_SIZE, 0, 0);
+		m_statusBar->SendMessage(WM_SIZE);
 		RECT sbarRect = { 0 };
-		::GetWindowRect(m_hwndStatusBar, &sbarRect);
+		m_statusBar->GetWindowRect(&sbarRect);
 		clientRect.bottom -= sbarRect.bottom - sbarRect.top;
 	}
 
-	if (m_hwndClient != nullptr)
+	if (m_clientView != nullptr)
 	{
-		::SetWindowPos(m_hwndClient, 
-			nullptr, 
-			clientRect.left, 
-			clientRect.top, 
-			clientRect.right - clientRect.left, 
-			clientRect.bottom - clientRect.top, 
-			SWP_NOZORDER | SWP_NOACTIVATE);
+		m_clientView->SetWindowPos(nullptr, &clientRect, SWP_NOZORDER | SWP_NOACTIVATE);
 	}
 }
 
-void MainFrame::ShowErrorMessage(const wchar_t* format, ...)
-{
-	wchar_t buffer[512]{};
-
-	va_list args;
-	va_start(args, format);
-	int count = vswprintf(buffer, _countof(buffer), format, args);
-	va_end(args);
-
-	wprintf(L"\nERROR MESSAGE:\n%s\n", buffer);
-}
 
 

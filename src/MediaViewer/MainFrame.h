@@ -20,6 +20,9 @@ public:
 		COMMAND_ID_HANDLER(IDM_ABOUT, OnAbout)
 	END_MSG_MAP()
 
+public:
+	void SetClientView(CWindow* clientView);
+
 private:
 	LRESULT OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 	LRESULT OnDestroy(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
@@ -35,9 +38,8 @@ private:
 	static INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
 
 	void UpdataLayout();
-	void ShowErrorMessage(const wchar_t* format, ...);
 
 private:
-	HWND	m_hwndClient = nullptr;
-	HWND	m_hwndStatusBar = nullptr;
+	CWindow*					m_clientView = nullptr;
+	std::unique_ptr<CWindow>	m_statusBar;
 };

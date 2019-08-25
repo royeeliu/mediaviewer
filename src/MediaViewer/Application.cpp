@@ -2,8 +2,11 @@
 #include "Application.h"
 #include "MainFrame.h"
 #include "VideoView.h"
+#include "Common.h"
 
 #define MAX_LOADSTRING 100
+
+CComModule	g_comModule;
 
 Application Application::Current;
 
@@ -19,7 +22,7 @@ void Application::Initialize(HINSTANCE hinst)
 {
 	m_hinstance = hinst;
 
-	HRESULT hr = m_comModule.Init(nullptr, hinst);
+	HRESULT hr = g_comModule.Init(nullptr, hinst);
 	ATLASSERT(SUCCEEDED(hr));
 
 	::AllocConsole();
@@ -69,6 +72,18 @@ void Application::Run(int show)
 		}
 	}
 
-	m_comModule.Term();
+	g_comModule.Term();
 	::CoUninitialize();
+}
+
+void Application::ShowErrorMessage(const wchar_t* format, ...)
+{
+	wchar_t buffer[512]{};
+
+	va_list args;
+	va_start(args, format);
+	int count = vswprintf(buffer, _countof(buffer), format, args);
+	va_end(args);
+
+	WPRINTF(L"\nERROR MESSAGE:\n%s\n", buffer);
 }

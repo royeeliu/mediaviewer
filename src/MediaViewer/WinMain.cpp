@@ -6,9 +6,6 @@
 
 #pragma comment(lib, "Comctl32.lib")
 
-CComModule	g_module;
-HWND		g_hwndConsole = nullptr;
-
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
