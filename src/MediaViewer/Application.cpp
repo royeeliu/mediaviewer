@@ -52,9 +52,7 @@ void Application::Initialize(HINSTANCE hinst)
 	m_mainFrame->SetIcon(hIconSmall, FALSE);
 	m_mainFrame->CenterWindow();
 
-	m_videoViewer = std::make_unique<VideoViewer>();
-	m_videoViewer->Initialize(m_mainFrame->GetClientView()->m_hWnd);
-	m_mainFrame->GetClientView()->PaintEvent = [this] { m_videoViewer->Render(); };
+	m_videoViewer = std::make_unique<VideoViewer>(*(m_mainFrame->GetClientView()));
 }
 
 void Application::Run(int show)

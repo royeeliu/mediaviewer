@@ -23,12 +23,7 @@ LRESULT ClientView::OnPaint(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHand
 {
 	PAINTSTRUCT ps;
 	HDC	hdc = BeginPaint(&ps);
-
-	if (PaintEvent != nullptr)
-	{
-		PaintEvent();
-	}
-
+	paintSlignal();
 	EndPaint(&ps);
 
 	return 0;

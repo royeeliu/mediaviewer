@@ -17,7 +17,10 @@ public:
 	END_MSG_MAP()
 
 public:
-	std::function<void(void)> PaintEvent;
+	typedef boost::signals2::signal<void(void)> PaintSignal;
+	typedef PaintSignal::slot_type				PaintSlot;
+
+	PaintSignal paintSlignal;
 
 private:
 	LRESULT OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);

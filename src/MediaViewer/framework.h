@@ -20,4 +20,7 @@
 // C++ 
 #include <memory>
 #include <functional>
+#include <vector>
 
+// boost
+#include <boost/signals2.hpp>
