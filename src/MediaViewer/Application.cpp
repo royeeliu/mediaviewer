@@ -1,7 +1,7 @@
 #include "framework.h"
 #include "Application.h"
 #include "MainFrame.h"
-#include "VideoView.h"
+#include "VideoViewer.h"
 #include "Common.h"
 
 #define MAX_LOADSTRING 100
@@ -45,12 +45,16 @@ void Application::Initialize(HINSTANCE hinst)
 	HICON hIconSmall = ::LoadIcon(hinst, MAKEINTRESOURCE(IDI_SMALL));
 
 	m_mainFrame = std::make_unique<MainFrame>();
-	HWND hwnd = m_mainFrame->Create(nullptr, &MainFrame::rcDefault, szTitle, 0, 0, hMenu);
-	ATLASSERT(hwnd != nullptr);
+	HWND hwndMainFrame = m_mainFrame->Create(nullptr, &MainFrame::rcDefault, szTitle, 0, 0, hMenu);
+	ATLASSERT(hwndMainFrame != nullptr);
 
 	m_mainFrame->SetIcon(hIcon);
 	m_mainFrame->SetIcon(hIconSmall, FALSE);
 	m_mainFrame->CenterWindow();
+
+	m_videoViewer = std::make_unique<VideoViewer>();
+	m_videoViewer->Initialize(m_mainFrame->GetClientView()->m_hWnd);
+	m_mainFrame->GetClientView()->PaintEvent = [this] { m_videoViewer->Render(); };
 }
 
 void Application::Run(int show)
@@ -82,8 +86,25 @@ void Application::ShowErrorMessage(const wchar_t* format, ...)
 
 	va_list args;
 	va_start(args, format);
-	int count = vswprintf(buffer, _countof(buffer), format, args);
+	int count = vswprintf_s(buffer, _countof(buffer), format, args);
 	va_end(args);
 
 	WPRINTF(L"\nERROR MESSAGE:\n%s\n", buffer);
+}
+
+void Application::ShowErrorMessage(const char* format, ...)
+{
+	char buffer[512]{};
+
+	va_list args;
+	va_start(args, format);
+	int count = vsprintf_s(buffer, _countof(buffer), format, args);
+	va_end(args);
+
+	PRINTF("\nERROR MESSAGE:\n%s\n", buffer);
+}
+
+void Application::OnMainFrameDestroyed()
+{
+	::PostQuitMessage(0);
 }

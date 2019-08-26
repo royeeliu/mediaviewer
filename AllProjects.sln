@@ -24,6 +24,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "App", "App", "{4A4530A1-4C54-4A40-B684-C1263B47D9C8}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MediaViewer", "src\MediaViewer\MediaViewer.vcxproj", "{94A08015-F32F-4229-9882-FDF74C0A8184}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B0F4C43C-1291-4128-B98C-25FEFCD22020} = {B0F4C43C-1291-4128-B98C-25FEFCD22020}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

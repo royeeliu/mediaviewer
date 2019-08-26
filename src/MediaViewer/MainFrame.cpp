@@ -11,27 +11,26 @@ MainFrame::~MainFrame()
 {
 }
 
-void MainFrame::SetClientView(CWindow* clientView)
+ClientView* MainFrame::GetClientView() const
 {
-	m_clientView = clientView;
-	UpdataLayout();
+	return m_clientView.get();
+}
 
-	if (clientView != nullptr)
-	{
-		clientView->ShowWindow(SW_SHOW);
-	}
+void MainFrame::OnFinalMessage(HWND hWnd)
+{
+	Application::Current.OnMainFrameDestroyed();
 }
 
 LRESULT MainFrame::OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
 	ModifyStyleEx(0, WS_EX_ACCEPTFILES);
 
-	//::SetParent(g_hwndConsole, m_hWnd);
-	//::SetWindowLong(g_hwndConsole, GWL_STYLE, WS_CHILD);
-	//m_hwndClient = g_hwndConsole;
-
 	//DWORD dwStyle = WS_CHILD | WS_VISIBLE | WS_CLIPCHILDREN | WS_CLIPSIBLINGS;
 	//HWND hwndStatusBar = ::CreateWindow(STATUSCLASSNAME, NULL, dwStyle, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, hWnd, (HMENU)IDW_MAINFRAME_STATUS_BAR, NULL, NULL);
+
+	m_clientView = std::make_unique<ClientView>();
+	HWND hwndView = m_clientView->Create(m_hWnd, &ClientView::rcDefault, L"VideoView");
+	ATLASSERT(hwndView != nullptr);
 
 	UpdataLayout();
 
@@ -40,7 +39,6 @@ LRESULT MainFrame::OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHand
 
 LRESULT MainFrame::OnDestroy(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
-	::PostQuitMessage(0);
 	return 0;
 }
 

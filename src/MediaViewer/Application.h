@@ -1,7 +1,7 @@
 #pragma once
 
 class MainFrame;
-class VideoView;
+class VideoViewer;
 
 class Application
 {
@@ -19,13 +19,17 @@ public:
 	void Initialize(HINSTANCE hinst);
 	void Run(int show);
 	void ShowErrorMessage(const wchar_t* format, ...);
+	void ShowErrorMessage(const char* format, ...);
 	
 	HINSTANCE GetInstance() const { return m_hinstance; }
 
+public:
+	void OnMainFrameDestroyed();
+
 private:
-	HINSTANCE					m_hinstance = nullptr;
-	HWND						m_hwndConsole = nullptr;
-	std::unique_ptr<MainFrame>	m_mainFrame;
-	std::unique_ptr<VideoView>	m_videoView;
+	HINSTANCE						m_hinstance = nullptr;
+	HWND							m_hwndConsole = nullptr;
+	std::unique_ptr<MainFrame>		m_mainFrame;
+	std::unique_ptr<VideoViewer>	m_videoViewer;
 };
 

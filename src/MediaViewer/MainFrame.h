@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Resource.h"
+#include "ClientView.h"
 
 class MainFrame
 	: public CWindowImpl<MainFrame, CWindow, CFrameWinTraits>
@@ -21,9 +22,11 @@ public:
 	END_MSG_MAP()
 
 public:
-	void SetClientView(CWindow* clientView);
+	ClientView* GetClientView() const;
 
 private:
+	virtual void OnFinalMessage(HWND hWnd) override;
+
 	LRESULT OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 	LRESULT OnDestroy(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 	LRESULT OnPaint(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
@@ -40,6 +43,6 @@ private:
 	void UpdataLayout();
 
 private:
-	CWindow*					m_clientView = nullptr;
+	std::unique_ptr<ClientView>	m_clientView;
 	std::unique_ptr<CWindow>	m_statusBar;
 };

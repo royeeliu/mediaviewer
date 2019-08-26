@@ -1,11 +1,11 @@
 #pragma once
 
-class VideoView
-	: public CWindowImpl<VideoView>
+class ClientView
+	: public CWindowImpl<ClientView>
 {
 public:
-	VideoView();
-	~VideoView();
+	ClientView();
+	~ClientView();
 
 	BEGIN_MSG_MAP(MainFrame)
 		MESSAGE_HANDLER(WM_CREATE, OnCreate)
@@ -15,6 +15,9 @@ public:
 		MESSAGE_HANDLER(WM_SIZE, OnSize)
 		MESSAGE_HANDLER(WM_DROPFILES, OnDropFiles)
 	END_MSG_MAP()
+
+public:
+	std::function<void(void)> PaintEvent;
 
 private:
 	LRESULT OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
