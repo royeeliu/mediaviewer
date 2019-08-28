@@ -23,8 +23,9 @@ public:
 	
 	HINSTANCE GetInstance() const { return m_hinstance; }
 
-public:
+private:
 	void OnMainFrameDestroyed();
+	void OnLoadVideo(const wchar_t* fileName);
 
 private:
 	HINSTANCE						m_hinstance = nullptr;

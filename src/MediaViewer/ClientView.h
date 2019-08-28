@@ -18,9 +18,10 @@ public:
 
 public:
 	typedef boost::signals2::signal<void(void)> PaintSignal;
-	typedef PaintSignal::slot_type				PaintSlot;
+	typedef boost::signals2::signal<void(void)>	DestroyedSignal;
 
-	PaintSignal paintSlignal;
+	PaintSignal		PaintEvent;
+	DestroyedSignal	DestroyedEvent;
 
 private:
 	LRESULT OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);

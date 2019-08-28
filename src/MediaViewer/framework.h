@@ -24,3 +24,10 @@
 
 // boost
 #include <boost/signals2.hpp>
+
+// WTL
+#include "atlapp.h"
+#include "atldlgs.h"
+
+// Leo
+#include "Leo/libleo.h"

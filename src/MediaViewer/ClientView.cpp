@@ -16,6 +16,7 @@ LRESULT ClientView::OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHan
 
 LRESULT ClientView::OnDestroy(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
+	DestroyedEvent();
 	return 0;
 }
 
@@ -23,7 +24,7 @@ LRESULT ClientView::OnPaint(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHand
 {
 	PAINTSTRUCT ps;
 	HDC	hdc = BeginPaint(&ps);
-	paintSlignal();
+	PaintEvent();
 	EndPaint(&ps);
 
 	return 0;

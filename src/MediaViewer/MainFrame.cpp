@@ -1,6 +1,7 @@
 #include "framework.h"
 #include "MainFrame.h"
 #include "Application.h"
+#include "Common.h"
 #include <shellapi.h>
 
 MainFrame::MainFrame()
@@ -18,7 +19,7 @@ ClientView* MainFrame::GetClientView() const
 
 void MainFrame::OnFinalMessage(HWND hWnd)
 {
-	Application::Current.OnMainFrameDestroyed();
+	DestroyedEvent();
 }
 
 LRESULT MainFrame::OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
@@ -92,6 +93,34 @@ LRESULT MainFrame::OnAbout(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHand
 		MAKEINTRESOURCE(IDD_ABOUTBOX), 
 		m_hWnd, 
 		&MainFrame::About);
+	return 0;
+}
+
+LRESULT MainFrame::OnLoadVideo(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+{
+	const wchar_t* filter = L"All Files(*.*)\0 *.*\0MP4 File(*.mp4)\0 *.mp4\0";
+	DWORD flags = OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT;
+
+	CFileDialog fileDlg(
+		TRUE, 
+		nullptr, 
+		nullptr, 
+		flags,
+		filter,
+		m_hWnd);
+
+	if (fileDlg.DoModal() == IDOK)
+	{
+		if (!::PathFileExists(fileDlg.m_szFileName))
+		{
+			SHOW_ERROR_MESSAGE(L"File not exists: %s", fileDlg.m_szFileName);
+		}
+		else
+		{
+			LoadVideoEvent(fileDlg.m_szFileName);
+		}
+	}
+
 	return 0;
 }
 

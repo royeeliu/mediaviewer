@@ -19,10 +19,19 @@ public:
 		MESSAGE_HANDLER(WM_DROPFILES, OnDropFiles)
 		COMMAND_ID_HANDLER(IDM_EXIT, OnExit)
 		COMMAND_ID_HANDLER(IDM_ABOUT, OnAbout)
+		COMMAND_ID_HANDLER(ID_LOAD_VIDEO, OnLoadVideo)
 	END_MSG_MAP()
 
 public:
 	ClientView* GetClientView() const;
+
+public:
+public:
+	typedef boost::signals2::signal<void(const wchar_t*)>	OpenSaveFileSignal;
+	typedef boost::signals2::signal<void(void)>				DestroyedSignal;
+
+	OpenSaveFileSignal	LoadVideoEvent;
+	DestroyedSignal		DestroyedEvent;
 
 private:
 	virtual void OnFinalMessage(HWND hWnd) override;
@@ -36,6 +45,7 @@ private:
 
 	LRESULT OnExit(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 	LRESULT OnAbout(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+	LRESULT OnLoadVideo(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
 private:
 	static INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);

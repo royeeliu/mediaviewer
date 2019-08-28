@@ -53,6 +53,9 @@ void Application::Initialize(HINSTANCE hinst)
 	m_mainFrame->CenterWindow();
 
 	m_videoViewer = std::make_unique<VideoViewer>(*(m_mainFrame->GetClientView()));
+
+	m_mainFrame->DestroyedEvent.connect([this] { OnMainFrameDestroyed(); });
+	m_mainFrame->LoadVideoEvent.connect([this](const wchar_t* fileName) { OnLoadVideo(fileName); });
 }
 
 void Application::Run(int show)
@@ -105,4 +108,9 @@ void Application::ShowErrorMessage(const char* format, ...)
 void Application::OnMainFrameDestroyed()
 {
 	::PostQuitMessage(0);
+}
+
+void Application::OnLoadVideo(const wchar_t* fileName)
+{
+	WPRINTF(L"Load video file: %s\n", fileName);
 }
