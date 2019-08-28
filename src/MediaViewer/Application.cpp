@@ -112,5 +112,11 @@ void Application::OnMainFrameDestroyed()
 
 void Application::OnLoadVideo(const wchar_t* fileName)
 {
-	WPRINTF(L"Load video file: %s\n", fileName);
+	if (!m_videoViewer)
+	{
+		SHOW_ERROR_MESSAGE(L"No video viewer!");
+		return;
+	}
+
+	m_videoViewer->LoadFile(fileName);
 }

@@ -13,8 +13,8 @@ struct ObjectQueue::Impl : Referencable
 {
 	uint32_t								maxSize_ = 1;
 	std::list<ReferenceGuard<Referencable>> objects_;
-	std::list<int>							inputInterrupts_;
-	std::list<int>							outputInterrupts_;
+	std::list<int>							sendingInterrupts_;
+	std::list<int>							receivingInterrupts_;
 	std::mutex								mutex_;
 	std::condition_variable					cv_;
 
@@ -27,14 +27,26 @@ public:
 
 	void Interrupt(int code)
 	{
-		inputInterrupts_.push_back(code);
-		outputInterrupts_.push_back(code);
+		sendingInterrupts_.push_back(code);
+		receivingInterrupts_.push_back(code);
 		cv_.notify_one();
 	}
 
-	bool Push(Referencable* obj)
+	void InterruptSendingEnd(int code)
 	{
-		if (objects_.size() >= maxSize_ || !inputInterrupts_.empty())
+		sendingInterrupts_.push_back(code);
+		cv_.notify_one();
+	}
+
+	void InterruptReceivintEnd(int code)
+	{
+		receivingInterrupts_.push_back(code);
+		cv_.notify_one();
+	}
+
+	bool TryPush(Referencable* obj)
+	{
+		if (objects_.size() >= maxSize_ || !sendingInterrupts_.empty())
 		{
 			return false;
 		}
@@ -44,9 +56,9 @@ public:
 		return true;
 	}
 
-	bool Pop(Referencable*& obj)
+	bool TryPop(Referencable*& obj)
 	{
-		if (objects_.empty() || !outputInterrupts_.empty())
+		if (objects_.empty() || !receivingInterrupts_.empty())
 		{
 			return false;
 		}
@@ -66,10 +78,10 @@ public:
 	{
 		while (true)
 		{
-			if (!inputInterrupts_.empty())
+			if (!sendingInterrupts_.empty())
 			{
-				code = inputInterrupts_.front();
-				inputInterrupts_.pop_front();
+				code = sendingInterrupts_.front();
+				sendingInterrupts_.pop_front();
 				return WaitResult::Interrupted;
 			}
 
@@ -88,10 +100,10 @@ public:
 
 		while (true)
 		{
-			if (!inputInterrupts_.empty())
+			if (!sendingInterrupts_.empty())
 			{
-				code = inputInterrupts_.front();
-				inputInterrupts_.pop_front();
+				code = sendingInterrupts_.front();
+				sendingInterrupts_.pop_front();
 				return WaitResult::Interrupted;
 			}
 
@@ -120,10 +132,10 @@ public:
 	{
 		while (true)
 		{
-			if (!outputInterrupts_.empty())
+			if (!receivingInterrupts_.empty())
 			{
-				code = outputInterrupts_.front();
-				outputInterrupts_.pop_front();
+				code = receivingInterrupts_.front();
+				receivingInterrupts_.pop_front();
 				return WaitResult::Interrupted;
 			}
 
@@ -142,10 +154,10 @@ public:
 
 		while (true)
 		{
-			if (!outputInterrupts_.empty())
+			if (!receivingInterrupts_.empty())
 			{
-				code = outputInterrupts_.front();
-				outputInterrupts_.pop_front();
+				code = receivingInterrupts_.front();
+				receivingInterrupts_.pop_front();
 				return WaitResult::Interrupted;
 			}
 
@@ -187,6 +199,18 @@ void ObjectQueue::Interrupt(int code) noexcept
 	m_impl->Interrupt(code);
 }
 
+void ObjectQueue::InterruptSendingEnd(int code) noexcept
+{
+	unique_lock lock(m_impl->mutex_);
+	m_impl->InterruptSendingEnd(code);
+}
+
+void ObjectQueue::InterruptReceivingEnd(int code) noexcept
+{
+	unique_lock lock(m_impl->mutex_);
+	m_impl->InterruptReceivintEnd(code);
+}
+
 void ObjectQueue::Reset(int code) noexcept
 {
 	unique_lock lock(m_impl->mutex_);
@@ -206,30 +230,30 @@ void ObjectQueue::_Clear() noexcept
 }
 
 // class ObjectQueue::InputEnd
-ObjectQueue::InputEnd::InputEnd(ObjectQueue& queue)
+ObjectQueue::SendingEnd::SendingEnd(ObjectQueue& queue)
 	: m_impl(AddReference(queue.m_impl))
 {
 }
 
-bool ObjectQueue::InputEnd::Push(Referencable* obj)
+bool ObjectQueue::SendingEnd::TrySend(Referencable* obj)
 {
 	unique_lock lock(m_impl->mutex_);
-	return m_impl->Push(obj);
+	return m_impl->TryPush(obj);
 }
 
-WaitResult ObjectQueue::InputEnd::Wait(int& code)
+WaitResult ObjectQueue::SendingEnd::Wait(int& code)
 {
 	unique_lock lock(m_impl->mutex_);
 	return m_impl->WaitPush(lock, code);
 }
 
-WaitResult ObjectQueue::InputEnd::WaitFor(std::chrono::milliseconds timeout, int& code)
+WaitResult ObjectQueue::SendingEnd::WaitFor(std::chrono::milliseconds timeout, int& code)
 {
 	unique_lock lock(m_impl->mutex_);
 	return m_impl->WaitPushFor(lock, timeout, code);
 }
 
-WaitResult ObjectQueue::InputEnd::WaitPush(Referencable* obj, int& code)
+WaitResult ObjectQueue::SendingEnd::Send(Referencable* obj, int& code)
 {
 	unique_lock lock(m_impl->mutex_);
 
@@ -238,14 +262,14 @@ WaitResult ObjectQueue::InputEnd::WaitPush(Referencable* obj, int& code)
 
 	if (result == WaitResult::Ok)
 	{
-		bool br = m_impl->Push(obj);
+		bool br = m_impl->TryPush(obj);
 		_ASSERTE(br);
 	}
 
 	return result;
 }
 
-WaitResult ObjectQueue::InputEnd::WaitPushFor(Referencable* obj, std::chrono::milliseconds timeout, int& code)
+WaitResult ObjectQueue::SendingEnd::SendFor(Referencable* obj, std::chrono::milliseconds timeout, int& code)
 {
 	unique_lock lock(m_impl->mutex_);
 
@@ -253,44 +277,44 @@ WaitResult ObjectQueue::InputEnd::WaitPushFor(Referencable* obj, std::chrono::mi
 
 	if (result == WaitResult::Ok)
 	{
-		bool br = m_impl->Push(obj);
+		bool br = m_impl->TryPush(obj);
 		_ASSERTE(br);
 	}
 
 	return result;
 }
 
-void ObjectQueue::InputEnd::_Clear() noexcept
+void ObjectQueue::SendingEnd::_Clear() noexcept
 {
 	SafeRelease(m_impl);
 }
 
 // class ObjectQueue::OutputEnd
-ObjectQueue::OutputEnd::OutputEnd(ObjectQueue& queue)
+ObjectQueue::ReceivingEnd::ReceivingEnd(ObjectQueue& queue)
 	: m_impl(AddReference(queue.m_impl))
 {
 }
 
-bool ObjectQueue::OutputEnd::Pop(Referencable*& obj)
+bool ObjectQueue::ReceivingEnd::TryReceive(Referencable*& obj)
 {
 	_ASSERTE(obj == nullptr);
 	unique_lock lock(m_impl->mutex_);
-	return m_impl->Pop(obj);
+	return m_impl->TryPop(obj);
 }
 
-WaitResult ObjectQueue::OutputEnd::Wait(int& code)
+WaitResult ObjectQueue::ReceivingEnd::Wait(int& code)
 {
 	unique_lock lock(m_impl->mutex_);
 	return m_impl->WaitPop(lock, code);
 }
 
-WaitResult ObjectQueue::OutputEnd::WaitFor(std::chrono::milliseconds timeout, int& code)
+WaitResult ObjectQueue::ReceivingEnd::WaitFor(std::chrono::milliseconds timeout, int& code)
 {
 	unique_lock lock(m_impl->mutex_);
 	return m_impl->WaitPopFor(lock, timeout, code);
 }
 
-WaitResult ObjectQueue::OutputEnd::WaitPop(Referencable*& obj, int& code)
+WaitResult ObjectQueue::ReceivingEnd::Receive(Referencable*& obj, int& code)
 {
 	unique_lock lock(m_impl->mutex_);
 
@@ -299,14 +323,14 @@ WaitResult ObjectQueue::OutputEnd::WaitPop(Referencable*& obj, int& code)
 
 	if (result == WaitResult::Ok)
 	{
-		bool br = m_impl->Pop(obj);
+		bool br = m_impl->TryPop(obj);
 		_ASSERTE(br);
 	}
 
 	return result;
 }
 
-WaitResult ObjectQueue::OutputEnd::WaitPopFor(Referencable*& obj, std::chrono::milliseconds timeout, int& code)
+WaitResult ObjectQueue::ReceivingEnd::ReceiveFor(Referencable*& obj, std::chrono::milliseconds timeout, int& code)
 {	
 	unique_lock lock(m_impl->mutex_);
 
@@ -314,14 +338,14 @@ WaitResult ObjectQueue::OutputEnd::WaitPopFor(Referencable*& obj, std::chrono::m
 
 	if (result == WaitResult::Ok)
 	{
-		bool br = m_impl->Pop(obj);
+		bool br = m_impl->TryPop(obj);
 		_ASSERTE(br);
 	}
 
 	return result;
 }
 
-void ObjectQueue::OutputEnd::_Clear() noexcept
+void ObjectQueue::ReceivingEnd::_Clear() noexcept
 {
 	SafeRelease(m_impl);
 }

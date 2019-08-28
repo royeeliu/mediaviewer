@@ -1,9 +1,9 @@
-﻿#pragma once
+#pragma once
 
 #include "Referencable.h"
 #include <chrono>
 
-namespace Leo { namespace Channels {
+namespace Leo { namespace Threading { namespace Channels {
 
 enum class WaitResult
 {
@@ -15,8 +15,8 @@ enum class WaitResult
 class ObjectQueue
 {
 public:
-	class InputEnd;
-	class OutputEnd;
+	class SendingEnd;
+	class ReceivingEnd;
 
 public:
 	explicit
@@ -49,6 +49,8 @@ public:
 	}
 
 	void Interrupt(int code) noexcept;
+	void InterruptSendingEnd(int code) noexcept;
+	void InterruptReceivingEnd(int code) noexcept;
 
 	void Reset(int code) noexcept;
 
@@ -70,22 +72,27 @@ private:
 	Impl* m_impl = nullptr;
 };
 
-class ObjectQueue::InputEnd
+class ObjectQueue::SendingEnd
 {
 public:
-	InputEnd(ObjectQueue& queue);
+	SendingEnd()
+	{
+	}
 
-	~InputEnd()
+	~SendingEnd()
 	{
 		_Clear();
 	}
 
-	InputEnd(InputEnd&& other) noexcept
+	explicit
+	SendingEnd(ObjectQueue& queue);
+
+	SendingEnd(SendingEnd&& other) noexcept
 	{
 		_Move(other.m_impl);
 	}
 
-	InputEnd& operator=(InputEnd&& other) noexcept
+	SendingEnd& operator=(SendingEnd&& other) noexcept
 	{
 		if (&other != this)
 		{
@@ -101,11 +108,11 @@ public:
 		return m_impl != nullptr;
 	}
 
-	bool Push(Referencable* obj);
+	bool TrySend(Referencable* obj);
 	WaitResult Wait(int& code);
 	WaitResult WaitFor(std::chrono::milliseconds timeout, int& code);
-	WaitResult WaitPush(Referencable* obj, int& code);
-	WaitResult WaitPushFor(Referencable* obj, std::chrono::milliseconds timeout, int& code);
+	WaitResult Send(Referencable* obj, int& code);
+	WaitResult SendFor(Referencable* obj, std::chrono::milliseconds timeout, int& code);
 
 private:
 	void _Clear() noexcept;
@@ -121,22 +128,27 @@ private:
 	ObjectQueue::Impl* m_impl = nullptr;
 };
 
-class ObjectQueue::OutputEnd
+class ObjectQueue::ReceivingEnd
 {
 public:
-	OutputEnd(ObjectQueue& queue);
+	ReceivingEnd()
+	{
+	}
 
-	~OutputEnd()
+	~ReceivingEnd()
 	{
 		_Clear();
 	}
 
-	OutputEnd(OutputEnd&& other) noexcept
+	explicit
+	ReceivingEnd(ObjectQueue& queue);
+
+	ReceivingEnd(ReceivingEnd&& other) noexcept
 	{
 		_Move(other.m_impl);
 	}
 
-	OutputEnd& operator=(OutputEnd&& other) noexcept
+	ReceivingEnd& operator=(ReceivingEnd&& other) noexcept
 	{
 		if (&other != this)
 		{
@@ -152,11 +164,11 @@ public:
 		return m_impl != nullptr;
 	}
 
-	bool Pop(Referencable*& obj);
+	bool TryReceive(Referencable*& obj);
 	WaitResult Wait(int& code);
 	WaitResult WaitFor(std::chrono::milliseconds timeout, int& code);
-	WaitResult WaitPop(Referencable*& obj, int& code);
-	WaitResult WaitPopFor(Referencable*& obj, std::chrono::milliseconds timeout, int& code);
+	WaitResult Receive(Referencable*& obj, int& code);
+	WaitResult ReceiveFor(Referencable*& obj, std::chrono::milliseconds timeout, int& code);
 
 private:
 	void _Clear() noexcept;
@@ -171,8 +183,11 @@ private:
 private:
 	ObjectQueue::Impl* m_impl = nullptr;
 };
+
 
 } // namespace Channels
+} // namespace Threading
 } // namespace Leo
+
 
 

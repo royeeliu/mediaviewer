@@ -87,17 +87,17 @@ public:
 		SafeRelease(m_ptr);
 	}
 
-	ReferenceGuard(ReferenceGuard const& other)
+	ReferenceGuard(ReferenceGuard const& other) noexcept
 	{
 		_Assign(other.m_ptr);
 	}
 
-	ReferenceGuard(ReferenceGuard&& other)
+	ReferenceGuard(ReferenceGuard&& other) noexcept
 	{
 		_Move(other.m_ptr);
 	}
 
-	ReferenceGuard& operator=(ReferenceGuard const& other)
+	ReferenceGuard& operator=(ReferenceGuard const& other) noexcept
 	{
 		if (&other != this)
 		{
@@ -108,7 +108,7 @@ public:
 		return *this;
 	}
 
-	ReferenceGuard& operator=(ReferenceGuard&& other)
+	ReferenceGuard& operator=(ReferenceGuard&& other) noexcept
 	{
 		if (&other != this)
 		{
@@ -133,6 +133,12 @@ public:
 	{
 		_ASSERTE(m_ptr != nullptr);
 		return *m_ptr;
+	}
+
+	T* operator->() const
+	{
+		_ASSERTE(m_ptr != nullptr);
+		return m_ptr;
 	}
 
 	T* Get() const
@@ -186,5 +192,13 @@ private:
 private:
 	T* m_ptr = nullptr;
 };
+
+template<class T>
+inline ReferenceGuard<T> MakeReferenceGuard(T*&& ptr)
+{
+	T* tmpPtr = ptr;
+	ptr = nullptr;
+	return ReferenceGuard<T>::Attach(tmpPtr);
+}
 
 } // namespace Leo

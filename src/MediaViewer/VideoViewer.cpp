@@ -7,10 +7,85 @@
 #pragma comment(lib, "MediaApi.lib")
 
 using namespace Leo;
-using namespace Channels;
+using namespace Leo::Threading;
 
 class VideoViewer::SourceThread
 {
+public:
+	SourceThread(ObjectQueue::SendingEnd&& packetChannel, CommandChannel::ReceivingEnd&& commandChannel)
+		: m_packetChannel(std::move(packetChannel))
+		, m_commandChannel(std::move(commandChannel))
+	{
+		m_thread = std::thread([this] { WorkerThreadProc(); });
+	}
+
+	~SourceThread()
+	{
+		if (m_thread.joinable())
+		{
+			m_thread.join();
+		}
+	}
+
+private:
+	void WorkerThreadProc()
+	{
+		CreateResource();
+		DoWorkerThreadLoop();
+		DestroyResource();
+	}
+
+	void DoWorkerThreadLoop()
+	{
+		ThreadLoopStatus status = ThreadLoopStatus::Continue;
+
+		while (status != ThreadLoopStatus::Exit)
+		{
+			if (!m_started)
+			{
+				CommandObject cmd = m_commandChannel.Receive();
+				status = ProcessCommand(cmd);
+			}
+			else
+			{
+				CommandObject cmd = m_commandChannel.Receive();
+				status = ProcessCommand(cmd);
+			}
+		}
+	}
+
+	void CreateResource()
+	{
+	}
+
+	void DestroyResource()
+	{
+	}
+
+	ThreadLoopStatus ProcessCommand(CommandObject& cmd)
+	{
+		switch (cmd->cmd)
+		{
+		case Command::ID::LoadFile:
+			LoadFile(dynamic_cast<LoadFileCommand*>(cmd.Get())->fileName);
+			break;
+
+		default: { _ASSERTE(false); }
+		}
+
+		return ThreadLoopStatus::Continue;
+	}
+
+	void LoadFile(std::wstring const& fileName)
+	{
+		WPRINTF(L"%s: %s\n", __FUNCTIONW__, fileName.c_str());
+	}
+
+private:
+	std::thread							m_thread;
+	ObjectQueue::SendingEnd				m_packetChannel;
+	CommandChannel::ReceivingEnd		m_commandChannel;
+	bool								m_started = false;
 };
 
 class VideoViewer::DecodeThread
@@ -20,11 +95,11 @@ class VideoViewer::DecodeThread
 class VideoViewer::RenderThread
 {
 public:
-	RenderThread(Channels::ObjectQueue::OutputEnd&& output, HWND displayWindow)
-		: m_output(std::move(output))
+	RenderThread(ObjectQueue::ReceivingEnd&& frameChannel, HWND displayWindow)
+		: m_frameChannel(std::move(frameChannel))
 	{
 		m_targetView.handle = (HWND)displayWindow;
-		m_thread = std::thread([this] { WorkerThread(); });
+		m_thread = std::thread([this] { WorkerThreadProc(); });
 	}
 
 	~RenderThread()
@@ -36,7 +111,7 @@ public:
 	}
 
 private:
-	void WorkerThread()
+	void WorkerThreadProc()
 	{
 		CreateResource();
 		DoThreadLoop();
@@ -45,13 +120,13 @@ private:
 
 	void DoThreadLoop()
 	{
-		CommandReply reply = CommandReply::None;
+		ThreadLoopStatus status = ThreadLoopStatus::Continue;
 
-		while (reply != CommandReply::Exit)
+		while (status != ThreadLoopStatus::Exit)
 		{
 			ReferenceGuard<Referencable> object;
 			int interruptCode = 0;
-			auto waitResult = m_output.WaitPop(*object.GetAdress(), interruptCode);
+			auto waitResult = m_frameChannel.Receive(*object.GetAdress(), interruptCode);
 
 			switch (waitResult)
 			{
@@ -59,13 +134,10 @@ private:
 				break;
 
 			case WaitResult::Interrupted:
-				reply = ProcessCommand(static_cast<Command>(interruptCode));
+				status = ProcessInterrupt(static_cast<InterruptCode>(interruptCode));
 				break;
 
-			default:
-				{
-					_ASSERTE(false);
-				}
+			default: { _ASSERTE(false); }
 			}
 		}
 	}
@@ -91,19 +163,27 @@ private:
 		}
 	}
 
-	CommandReply ProcessCommand(Command cmd)
+	ThreadLoopStatus ProcessInterrupt(InterruptCode code)
 	{
-		switch (cmd)
+		switch (code)
 		{
-		case Command::Shutdown:
-			return CommandReply::Exit;
+		case InterruptCode::None:
+			break;
 
-		case Command::Repaint:
+		case InterruptCode::SendCommand:
+			break;
+
+		case InterruptCode::Shutdown:
+			return ThreadLoopStatus::Exit;
+
+		case InterruptCode::Repaint:
 			Render();
 			break;
+
+		default: { _ASSERTE(false); }
 		}
 
-		return CommandReply::None;
+		return ThreadLoopStatus::Continue;
 	}
 
 	void Render()
@@ -123,7 +203,7 @@ private:
 
 private:
 	std::thread							m_thread;
-	Channels::ObjectQueue::OutputEnd	m_output;
+	ObjectQueue::ReceivingEnd			m_frameChannel;
 	MAPI_TargetView						m_targetView{};
 	MAPI_Graphics*						m_graphics{ nullptr };
 	MAPI_Color_ARGB						m_bkgColor{ 255, 0, 0, 0 };
@@ -135,7 +215,15 @@ VideoViewer::VideoViewer(ClientView& displayWindow)
 	m_connections.push_back(m_displayWindow.PaintEvent.connect([this] { Render(); }));
 	m_connections.push_back(m_displayWindow.DestroyedEvent.connect([this] { Shutdown(); }));
 
-	m_renderThread = std::make_unique<RenderThread>(ObjectQueue::OutputEnd(m_frameChannel), (HWND)m_displayWindow);
+	CommandChannel sourceCommandChannel{};
+	m_sourceCommandSender = CommandChannel::SendingEnd(sourceCommandChannel);
+
+	m_sourceThread = std::make_unique<SourceThread>(
+		ObjectQueue::SendingEnd(m_packtChannel),
+		CommandChannel::ReceivingEnd(sourceCommandChannel));
+	m_renderThread = std::make_unique<RenderThread>(
+		ObjectQueue::ReceivingEnd(m_frameChannel),
+		(HWND)m_displayWindow);
 
 	Initialize();
 }
@@ -148,18 +236,24 @@ VideoViewer::~VideoViewer()
 	}
 }
 
+void VideoViewer::LoadFile(wchar_t const* fileName)
+{
+	_ASSERTE(fileName != nullptr);
+	auto cmd = MakeReferenceGuard(new LoadFileCommand{});
+	cmd->fileName = fileName;
+	m_sourceCommandSender.SendAsync(CommandObject::Attach(cmd.Detach()));
+}
+
 void VideoViewer::Initialize()
 {
 }
 
 void VideoViewer::Shutdown()
 {
-	m_packtChannel.Reset(static_cast<int>(Command::Shutdown));
-	m_packtChannel.Reset(static_cast<int>(Command::Shutdown));
 }
 
 void VideoViewer::Render()
 {
-	m_frameChannel.Interrupt(static_cast<int>(Command::Repaint));
+	m_frameChannel.InterruptReceivingEnd(static_cast<int>(InterruptCode::Repaint));
 }
 

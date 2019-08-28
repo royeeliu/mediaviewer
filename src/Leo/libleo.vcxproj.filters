@@ -18,10 +18,22 @@
     <ClInclude Include="Referencable.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Channels.h">
+    <ClInclude Include="libleo.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="libleo.h">
+    <ClInclude Include="Threading.Channels.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Threading.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Threading.Channels.SyncChannel.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Threading.Channels.AsyncChannel.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Threading.Channels.ObjectQueue.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -29,7 +41,7 @@
     <ClCompile Include="lib.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="ObjectQueue.cpp">
+    <ClCompile Include="Threading.Channels.ObjectQueue.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

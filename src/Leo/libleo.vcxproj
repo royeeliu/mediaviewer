@@ -155,12 +155,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Channels.h" />
+    <ClInclude Include="Threading.Channels.AsyncChannel.h" />
+    <ClInclude Include="Threading.Channels.h" />
     <ClInclude Include="libleo.h" />
     <ClInclude Include="Referencable.h" />
+    <ClInclude Include="Threading.Channels.ObjectQueue.h" />
+    <ClInclude Include="Threading.Channels.SyncChannel.h" />
+    <ClInclude Include="Threading.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ObjectQueue.cpp" />
+    <ClCompile Include="Threading.Channels.ObjectQueue.cpp" />
     <ClCompile Include="lib.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
