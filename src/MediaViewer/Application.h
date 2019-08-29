@@ -22,6 +22,7 @@ public:
 	void ShowErrorMessage(const char* format, ...);
 	
 	HINSTANCE GetInstance() const { return m_hinstance; }
+	uint32_t GetMainThreadId() const { return m_mainThreadId; }
 
 private:
 	void OnMainFrameDestroyed();
@@ -30,6 +31,7 @@ private:
 private:
 	HINSTANCE						m_hinstance = nullptr;
 	HWND							m_hwndConsole = nullptr;
+	uint32_t						m_mainThreadId = 0;
 	std::unique_ptr<MainFrame>		m_mainFrame;
 	std::unique_ptr<VideoViewer>	m_videoViewer;
 };

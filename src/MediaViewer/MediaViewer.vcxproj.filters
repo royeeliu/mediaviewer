@@ -13,7 +13,7 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Models">
+    <Filter Include="VideoViewer">
       <UniqueIdentifier>{635b95ff-72a0-4f27-b452-28efe7cdfdba}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -40,7 +40,25 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="VideoViewer.h">
-      <Filter>Models</Filter>
+      <Filter>VideoViewer</Filter>
+    </ClInclude>
+    <ClInclude Include="Dispatcher.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceThread.h">
+      <Filter>VideoViewer</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderThread.h">
+      <Filter>VideoViewer</Filter>
+    </ClInclude>
+    <ClInclude Include="DecodeThread.h">
+      <Filter>VideoViewer</Filter>
+    </ClInclude>
+    <ClInclude Include="MediaApiHelper.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="StringHelper.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -57,7 +75,22 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="VideoViewer.cpp">
-      <Filter>Models</Filter>
+      <Filter>VideoViewer</Filter>
+    </ClCompile>
+    <ClCompile Include="Dispatcher.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceThread.cpp">
+      <Filter>VideoViewer</Filter>
+    </ClCompile>
+    <ClCompile Include="DecodeThread.cpp">
+      <Filter>VideoViewer</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderThread.cpp">
+      <Filter>VideoViewer</Filter>
+    </ClCompile>
+    <ClCompile Include="Common.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

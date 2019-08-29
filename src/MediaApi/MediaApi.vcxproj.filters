@@ -28,24 +28,15 @@
     <Filter Include="DX11">
       <UniqueIdentifier>{7ce04eda-fbc4-40c7-a8f2-6cbf29d60b5b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MediaSource">
+      <UniqueIdentifier>{fb2fa816-2d46-45f9-bae1-6181e41299c6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MediaSource.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="..\Include\MediaApi.h">
       <Filter>Include</Filter>
     </ClInclude>
     <ClInclude Include="Diagnisis.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="ffmpeg.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="framework.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="pch.h">
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="Types.h">
@@ -93,6 +84,27 @@
     <ClInclude Include="DirectXHelper.h">
       <Filter>DX11</Filter>
     </ClInclude>
+    <ClInclude Include="..\Include\MediaApi\MediaSource.h">
+      <Filter>Include\MediaApi</Filter>
+    </ClInclude>
+    <ClInclude Include="MediaSource.h">
+      <Filter>MediaSource</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceStream.h">
+      <Filter>MediaSource</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="framework.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="FFmpegHelper.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="FFmpeg.h">
+      <Filter>Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -101,13 +113,7 @@
     <ClCompile Include="MediaApi.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="MediaSource.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Diagnisis.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="pch.cpp">
       <Filter>Common</Filter>
     </ClCompile>
     <ClCompile Include="uuids.cpp">
@@ -130,6 +136,15 @@
     </ClCompile>
     <ClCompile Include="DX11RenderTarget.cpp">
       <Filter>DX11</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>头文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceStream.cpp">
+      <Filter>MediaSource</Filter>
+    </ClCompile>
+    <ClCompile Include="MediaSource.cpp">
+      <Filter>MediaSource</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

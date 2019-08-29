@@ -21,6 +21,12 @@
 #include <memory>
 #include <functional>
 #include <vector>
+#include <list>
+#include <map>
+#include <string>
+#include <thread>
+#include <mutex>
+#include <condition_variable>
 
 // boost
 #include <boost/signals2.hpp>

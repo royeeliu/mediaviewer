@@ -98,7 +98,7 @@ LRESULT MainFrame::OnAbout(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHand
 
 LRESULT MainFrame::OnLoadVideo(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	const wchar_t* filter = L"All Files(*.*)\0 *.*\0MP4 File(*.mp4)\0 *.mp4\0";
+	const wchar_t* filter = L"MP4 File(*.mp4)\0 *.mp4\0All Files(*.*)\0 *.*\0";
 	DWORD flags = OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT;
 
 	CFileDialog fileDlg(

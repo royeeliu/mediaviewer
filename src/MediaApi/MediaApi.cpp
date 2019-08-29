@@ -39,22 +39,50 @@ struct MAPI_MediaSource : MediaStruct<MediaSource> {};
 struct MAPI_Presenter : MediaStruct<Presenter> {};
 struct MAPI_Graphics : MediaStruct<Graphics> {};
 struct MAPI_RenderTarget : MediaStruct<RenderTarget*> {};
+struct MAPI_SourceStream : MediaStruct<SourceStream*> {};
 
 MEDIA_API MAPI_MediaSource* MAPI_MediaSource_Create() noexcept
 {
 	return new MAPI_MediaSource{};
 }
 
-MEDIA_API void MAPI_MediaSource_Destroy(MAPI_MediaSource* self) noexcept
+MEDIA_API void MAPI_MediaSource_Destroy(MAPI_MediaSource** obj) noexcept
 {
-	SafeDelete(&self);
+	SafeDelete(obj);
 }
 
-MEDIA_API void MAPI_MediaSource_LoadFile(MAPI_MediaSource* self, const char* u8_url, MAPI_Error* err) noexcept
+MEDIA_API void MAPI_MediaSource_LoadFile(MAPI_MediaSource* obj, const char* u8_url, MAPI_Error* err) noexcept
 {
 	MAPI_Error err_{ MAPI_NO_ERROR };
 	err = (err != nullptr) ? err : &err_;
-	self->impl.LoadFile(u8_url, *err);
+	obj->impl.LoadFile(u8_url, *err);
+}
+
+MEDIA_API uint32_t MAPI_MediaSource_GetStreamCount(MAPI_MediaSource* obj) noexcept
+{
+	return obj->impl.GetStreamCount();
+}
+
+MEDIA_API MAPI_SourceStream* MAPI_MediaSource_GetStream(MAPI_MediaSource* obj, uint32_t index) noexcept
+{
+	auto stream = new MAPI_SourceStream{};
+	stream->impl = obj->impl.GetStream(index);
+	return stream;
+}
+
+MEDIA_API void MAPI_SourceStream_Destroy(MAPI_SourceStream** obj) noexcept
+{
+	SafeDelete(obj);
+}
+
+MEDIA_API MAPI_MediaType MAPI_SourceStream_GetMediaType(MAPI_SourceStream* obj) noexcept
+{
+	return obj->impl->GetMediaType();
+}
+
+MEDIA_API uint32_t MAPI_SourceStream_GetId(MAPI_SourceStream* obj) noexcept
+{
+	return obj->impl->GetId();
 }
 
 MEDIA_API MAPI_Presenter* MAPI_Presenter_Create() noexcept
@@ -62,16 +90,16 @@ MEDIA_API MAPI_Presenter* MAPI_Presenter_Create() noexcept
 	return new MAPI_Presenter{};
 }
 
-MEDIA_API void MAPI_Presenter_Destroy(MAPI_Presenter* self) noexcept
+MEDIA_API void MAPI_Presenter_Destroy(MAPI_Presenter* obj) noexcept
 {
-	SafeDelete(&self);
+	SafeDelete(&obj);
 }
 
-MEDIA_API void MAPI_Presenter_Initialize(MAPI_Presenter* self, MAPI_TargetView const* view, MAPI_Error* err) noexcept
+MEDIA_API void MAPI_Presenter_Initialize(MAPI_Presenter* obj, MAPI_TargetView const* view, MAPI_Error* err) noexcept
 {
 	MAPI_Error err_{ MAPI_NO_ERROR };
 	err = (err != nullptr) ? err : &err_;
-	self->impl.Initialize(std::make_unique<TargetView>(view), *err);
+	obj->impl.Initialize(std::make_unique<TargetView>(view), *err);
 }
 
 MEDIA_API MAPI_Graphics* MAPI_Graphics_Create() noexcept

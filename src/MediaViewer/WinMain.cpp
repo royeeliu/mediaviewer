@@ -1,10 +1,11 @@
-﻿// MediaViewer.cpp : 定义应用程序的入口点。
+﻿// WinMain.cpp : 定义应用程序的入口点。
 //
 
 #include "framework.h"
 #include "Application.h"
 
 #pragma comment(lib, "Comctl32.lib")
+#pragma comment(lib, "MediaApi.lib")
 
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,

@@ -2,6 +2,13 @@
 
 #include "Config.h"
 
+enum class MAPI_MediaType : int
+{
+	Unknown = 0,
+	Video = 1,
+	Audio = 2,
+};
+
 struct MAPI_TargetView
 {
 	void* handle;

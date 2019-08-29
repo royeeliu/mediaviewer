@@ -34,6 +34,21 @@ void MediaSource::LoadFile(const char* u8_url, Error& err) noexcept
 	RETURN_VOID_IF(!CHECK_FFMPEG_RESULT("avformat_find_stream_info", result, err));
 
 	m_avfx = std::move(sp_avfx);
+
+	for (uint32_t i = 0; i < m_avfx->nb_streams; i++)
+	{
+		m_streams.push_back(std::make_unique<SourceStream>(m_avfx, i));
+	}
+}
+
+uint32_t MediaSource::GetStreamCount() noexcept
+{
+	return m_avfx->nb_streams;
+}
+
+SourceStream* MediaSource::GetStream(uint32_t index) noexcept
+{
+	return m_streams[index].get();
 }
 
 } // End of namespace

@@ -38,6 +38,8 @@ void Application::Initialize(HINSTANCE hinst)
 	wchar_t szTitle[MAX_LOADSTRING];
 	LoadStringW(hinst, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
 
+	m_mainThreadId = ::GetCurrentThreadId();
+
 	//RECT frameRect = { 0, 0, 800, 600 };
 	HMENU hMenu = ::LoadMenu(hinst, MAKEINTRESOURCE(IDC_MEDIAVIEWER));
 
@@ -68,12 +70,24 @@ void Application::Run(int show)
 	MSG msg{};
 
 	// 主消息循环:
-	while (GetMessage(&msg, nullptr, 0, 0))
+	while (true)
 	{
-		if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
+		DWORD waitResult = ::MsgWaitForMultipleObjectsEx(0, 
+			nullptr, 
+			INFINITE, 
+			QS_ALLEVENTS, 
+			MWMO_ALERTABLE | MWMO_INPUTAVAILABLE);
+
+		if (waitResult != WAIT_IO_COMPLETION)
 		{
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);
+			while (::PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
+			{
+				if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
+				{
+					TranslateMessage(&msg);
+					DispatchMessage(&msg);
+				}
+			}
 		}
 	}
 
