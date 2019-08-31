@@ -5,16 +5,16 @@
 
 namespace Leo { namespace Threading { namespace Channels {
 
-enum class WaitResult
-{
-	Ok = 0,
-	Timeout = 1,
-	Interrupted = 2,
-};
-
 class ObjectQueue
 {
 public:
+	enum class Status
+	{
+		Ok = 0,
+		Timeout = 1,
+		Interrupted = 2,
+	};
+
 	class SendingEnd;
 	class ReceivingEnd;
 
@@ -109,10 +109,10 @@ public:
 	}
 
 	bool TrySend(Referencable* obj);
-	WaitResult Wait(int& code);
-	WaitResult WaitFor(std::chrono::milliseconds timeout, int& code);
-	WaitResult Send(Referencable* obj, int& code);
-	WaitResult SendFor(Referencable* obj, std::chrono::milliseconds timeout, int& code);
+	Status Wait(int& code);
+	Status WaitFor(std::chrono::milliseconds timeout, int& code);
+	Status Send(Referencable* obj, int& code);
+	Status SendFor(Referencable* obj, std::chrono::milliseconds timeout, int& code);
 
 private:
 	void _Clear() noexcept;
@@ -165,10 +165,10 @@ public:
 	}
 
 	bool TryReceive(Referencable*& obj);
-	WaitResult Wait(int& code);
-	WaitResult WaitFor(std::chrono::milliseconds timeout, int& code);
-	WaitResult Receive(Referencable*& obj, int& code);
-	WaitResult ReceiveFor(Referencable*& obj, std::chrono::milliseconds timeout, int& code);
+	Status Wait(int& code);
+	Status WaitFor(std::chrono::milliseconds timeout, int& code);
+	Status Receive(Referencable*& obj, int& code);
+	Status ReceiveFor(Referencable*& obj, std::chrono::milliseconds timeout, int& code);
 
 private:
 	void _Clear() noexcept;

@@ -24,4 +24,6 @@ private:
 	CommandChannel::ReceivingEnd		m_commandChannel;
 	bool								m_started = false;
 	MAPI_MediaSource*					m_mediaSource = nullptr;
+	uint32_t							m_streamIndex = 0;
+	uint32_t							m_packetCount = 0;
 };

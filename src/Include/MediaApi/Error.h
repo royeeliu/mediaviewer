@@ -12,6 +12,7 @@ enum MAPI_ERROR_CODE
 	MAPIERR_NOT_IMPL			= -5,	// 未实现
 	MAPIERR_SYSTERM				= -10,	// 系统错误
 	MAPIERR_COM					= -11,	// COM 组件返回的错误
+	MAPIERR_EndOfStream			= -20,	// 读到流（文件）末尾
 };
 
 struct MAPI_Error

@@ -6,14 +6,15 @@
 
 namespace mapi {
 
-class SourceStream
+class StreamDescriptor
 {
 public:
-	SourceStream(std::shared_ptr<AVFormatContext> avfx, uint32_t streamIndex);
-	~SourceStream();
+	StreamDescriptor(std::shared_ptr<AVFormatContext> avfx, uint32_t streamIndex);
+	~StreamDescriptor();
 
 	uint32_t GetId() const { return m_stream->id; }
 	MediaType GetMediaType() const;
+	Rational GetTimebase() const;
 
 private:
 	std::shared_ptr<AVFormatContext>	m_avfx;

@@ -2,7 +2,7 @@
 
 #include "Types.h"
 #include "Uncopyable.h"
-#include "SourceStream.h"
+#include "StreamDescriptor.h"
 #include <vector>
 
 namespace mapi {
@@ -13,15 +13,14 @@ public:
 	MediaSource();
 	~MediaSource();
 
-	MediaSource(MediaSource const&) = delete;
-	MediaSource& operator=(MediaSource const&) = delete;
-
 	void LoadFile(const char* u8_url, Error& err) noexcept;
 	uint32_t GetStreamCount() noexcept;
-	SourceStream* GetStream(uint32_t index) noexcept;
+	StreamDescriptor* GetStream(uint32_t index) noexcept;
+	int32_t FindBestStream(MediaType type) noexcept;
+	std::unique_ptr<MediaPacket> ReadNextPacket(Error& err) noexcept;
 
 private:
-	using SourceStreamArray = std::vector<std::unique_ptr<SourceStream>>;
+	using SourceStreamArray = std::vector<std::unique_ptr<StreamDescriptor>>;
 
 	std::shared_ptr<AVFormatContext>	m_avfx;
 	SourceStreamArray					m_streams;

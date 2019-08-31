@@ -39,10 +39,10 @@ void VideoViewer::RenderThread::DoThreadLoop()
 
 		switch (waitResult)
 		{
-		case WaitResult::Ok:
+		case ObjectQueue::Status::Ok:
 			break;
 
-		case WaitResult::Interrupted:
+		case ObjectQueue::Status::Interrupted:
 			status = ProcessInterrupt(static_cast<InterruptCode>(interruptCode));
 			break;
 

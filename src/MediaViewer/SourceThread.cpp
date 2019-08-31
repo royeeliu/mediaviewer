@@ -43,8 +43,28 @@ void VideoViewer::SourceThread::DoWorkerThreadLoop()
 		}
 		else
 		{
-			CommandObject cmd = m_commandChannel.Receive();
-			status = ProcessCommand(cmd);
+			MAPI_Error err{};
+			MAPI_MediaPacket* packet = MAPI_MediaSource_ReadPacket(m_mediaSource, &err);
+
+			if (err.code != MAPI_NO_ERROR)
+			{
+				ASSERT(packet == nullptr);
+				SHOW_ERROR_MESSAGE(L"MAPI_MediaSource_ReadPacket failed: %s", FormatError(err).c_str());
+				m_started = false;
+				continue;
+			}
+
+			int streamIndex = MAPI_MediaPacket_GetPts(packet);
+
+			if (streamIndex == m_streamIndex)
+			{
+				int64_t pts = MAPI_MediaPacket_GetPts(packet);
+				int64_t dts = MAPI_MediaPacket_GetDts(packet);
+				WPRINTF(L"\r[%u]pts: %lld, \tdts: %lld                                      ", m_packetCount, pts, dts);
+				m_packetCount++;
+			}
+
+			MAPI_MediaPacket_Destroy(&packet);
 		}
 	}
 }
@@ -84,7 +104,7 @@ void VideoViewer::SourceThread::LoadFile(std::wstring const& fileName)
 	if (err.code != MAPI_NO_ERROR)
 	{
 		SHOW_ERROR_MESSAGE(L"MAPI_MediaSource_LoadFile failed: %s, %s", 
-			FormatError(err), 
+			FormatError(err).c_str(), 
 			fileName.c_str());
 		return;
 	}
@@ -94,13 +114,22 @@ void VideoViewer::SourceThread::LoadFile(std::wstring const& fileName)
 
 	for (uint32_t i = 0; i < streamCount; i++)
 	{
-		MAPI_SourceStream* stream = MAPI_MediaSource_GetStream(m_mediaSource, i);
-		uint32_t id = MAPI_SourceStream_GetId(stream);
-		MAPI_MediaType type = MAPI_SourceStream_GetMediaType(stream);
-		MAPI_SourceStream_Destroy(&stream);
+		MAPI_StreamDescriptor* stream = MAPI_MediaSource_GetStreamDescriptor(m_mediaSource, i);
+		uint32_t id = MAPI_StreamDescriptor_GetId(stream);
+		MAPI_MediaType type = MAPI_StreamDescriptor_GetMediaType(stream);
+		MAPI_StreamDescriptor_Destroy(&stream);
 
 		WPRINTF(L"##[%d] Stream %d: %s\n", i, id, U8ToW(MediaApiHelper::MediaTypeName(type)).c_str());
 	}
+
+	m_streamIndex = MAPI_MediaSource_FindBestStream(m_mediaSource, MAPI_MediaType::Video);
+
+	MAPI_StreamDescriptor* videoStream = MAPI_MediaSource_GetStreamDescriptor(m_mediaSource, m_streamIndex);
+	MAPI_Rational timebase{};
+	MAPI_StreamDescriptor_GetTimebase(videoStream, &timebase);
+	MAPI_StreamDescriptor_Destroy(&videoStream);
+
+	WPRINTF(L"best video stream: %d, timebase{%d,%d}\n", m_streamIndex, timebase.num, timebase.den);
 
 	m_started = true;
 }

@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Include/MediaApi.h"
 #include "MediaSource.h"
+#include "MediaPacket.h"
 #include "Presenter.h"
 #include "TargetView.h"
 #include "Graphics.h"
@@ -39,7 +40,8 @@ struct MAPI_MediaSource : MediaStruct<MediaSource> {};
 struct MAPI_Presenter : MediaStruct<Presenter> {};
 struct MAPI_Graphics : MediaStruct<Graphics> {};
 struct MAPI_RenderTarget : MediaStruct<RenderTarget*> {};
-struct MAPI_SourceStream : MediaStruct<SourceStream*> {};
+struct MAPI_StreamDescriptor : MediaStruct<StreamDescriptor*> {};
+struct MAPI_MediaPacket : MediaStruct<std::unique_ptr<MediaPacket>> {};
 
 MEDIA_API MAPI_MediaSource* MAPI_MediaSource_Create() noexcept
 {
@@ -63,26 +65,77 @@ MEDIA_API uint32_t MAPI_MediaSource_GetStreamCount(MAPI_MediaSource* obj) noexce
 	return obj->impl.GetStreamCount();
 }
 
-MEDIA_API MAPI_SourceStream* MAPI_MediaSource_GetStream(MAPI_MediaSource* obj, uint32_t index) noexcept
+MEDIA_API int32_t MAPI_MediaSource_FindBestStream(MAPI_MediaSource* obj, MAPI_MediaType type) noexcept
 {
-	auto stream = new MAPI_SourceStream{};
+	return obj->impl.FindBestStream(type);
+}
+
+MEDIA_API MAPI_StreamDescriptor* MAPI_MediaSource_GetStreamDescriptor(MAPI_MediaSource* obj, uint32_t index) noexcept
+{
+	auto stream = new MAPI_StreamDescriptor{};
 	stream->impl = obj->impl.GetStream(index);
 	return stream;
 }
 
-MEDIA_API void MAPI_SourceStream_Destroy(MAPI_SourceStream** obj) noexcept
+MEDIA_API MAPI_MediaPacket* MAPI_MediaSource_ReadPacket(MAPI_MediaSource* obj, MAPI_Error* err)
+{
+	MAPI_Error err_{ MAPI_NO_ERROR };
+	err = (err != nullptr) ? err : &err_;
+	auto packet = obj->impl.ReadNextPacket(*err);
+
+	if (err->code != MAPI_NO_ERROR)
+	{
+		return nullptr;
+	}
+
+	MAPI_MediaPacket* result = new MAPI_MediaPacket{};
+	result->impl = std::move(packet);
+	return result;
+}
+
+MEDIA_API void MAPI_StreamDescriptor_Destroy(MAPI_StreamDescriptor** obj) noexcept
 {
 	SafeDelete(obj);
 }
 
-MEDIA_API MAPI_MediaType MAPI_SourceStream_GetMediaType(MAPI_SourceStream* obj) noexcept
+MEDIA_API MAPI_MediaType MAPI_StreamDescriptor_GetMediaType(MAPI_StreamDescriptor* obj) noexcept
 {
 	return obj->impl->GetMediaType();
 }
 
-MEDIA_API uint32_t MAPI_SourceStream_GetId(MAPI_SourceStream* obj) noexcept
+MEDIA_API uint32_t MAPI_StreamDescriptor_GetId(MAPI_StreamDescriptor* obj) noexcept
 {
 	return obj->impl->GetId();
+}
+
+MEDIA_API void MAPI_StreamDescriptor_GetTimebase(MAPI_StreamDescriptor* obj, MAPI_Rational* timebase) noexcept
+{
+	*timebase = obj->impl->GetTimebase();
+}
+
+MEDIA_API void MAPI_MediaPacket_Destroy(MAPI_MediaPacket** obj) noexcept
+{
+	SafeDelete(obj);
+}
+
+MEDIA_API uint32_t MAPI_MediaPacket_GetStreamIndex(MAPI_MediaPacket* obj) noexcept
+{
+	return obj->impl->GetStreamIndex();
+}
+
+MEDIA_API int64_t MAPI_MediaPacket_GetPts(MAPI_MediaPacket* obj) noexcept
+{
+	return obj->impl->GetPts();
+}
+
+MEDIA_API int64_t MAPI_MediaPacket_GetDts(MAPI_MediaPacket* obj) noexcept
+{
+	return obj->impl->GetDts();
+}
+
+MEDIA_API void MAPI_MediaPacket_GetTimebase(MAPI_MediaPacket* obj, MAPI_Rational* timebase) noexcept
+{
+	*timebase = obj->impl->GetTimebase();
 }
 
 MEDIA_API MAPI_Presenter* MAPI_Presenter_Create() noexcept

@@ -2,9 +2,12 @@
 
 #include "Application.h"
 #include <stdio.h>
+#include <assert.h>
 
 #define PRINTF	printf
 #define WPRINTF wprintf 
+
+#define ASSERT assert
 
 extern CComModule	g_module;
 extern HWND			g_hwndConsole;

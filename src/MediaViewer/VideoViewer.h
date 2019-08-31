@@ -75,7 +75,6 @@ private:
 	using SignalConnectionArray = std::vector<SignalConnection>;
 	using ObjectQueue = Leo::Threading::Channels::ObjectQueue;
 	using CommandChannel = Leo::Threading::Channels::AsyncChannel<CommandObject>;
-	using WaitResult = Leo::Threading::Channels::WaitResult;
 
 	ClientView&						m_displayWindow;
 	SignalConnectionArray			m_connections;

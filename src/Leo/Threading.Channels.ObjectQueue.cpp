@@ -74,7 +74,7 @@ public:
 		objects_.clear();
 	}
 
-	WaitResult WaitPush(unique_lock& lock, int& code)
+	Status WaitPush(unique_lock& lock, int& code)
 	{
 		while (true)
 		{
@@ -82,19 +82,19 @@ public:
 			{
 				code = sendingInterrupts_.front();
 				sendingInterrupts_.pop_front();
-				return WaitResult::Interrupted;
+				return Status::Interrupted;
 			}
 
 			if (objects_.size() < maxSize_)
 			{
-				return WaitResult::Ok;
+				return Status::Ok;
 			}
 
 			cv_.wait(lock);
 		}
 	}
 
-	WaitResult WaitPushFor(unique_lock& lock, milliseconds timeout, int& code)
+	Status WaitPushFor(unique_lock& lock, milliseconds timeout, int& code)
 	{
 		auto startTime = high_resolution_clock::now();
 
@@ -104,31 +104,31 @@ public:
 			{
 				code = sendingInterrupts_.front();
 				sendingInterrupts_.pop_front();
-				return WaitResult::Interrupted;
+				return Status::Interrupted;
 			}
 
 			if (objects_.size() < maxSize_)
 			{
-				return WaitResult::Ok;
+				return Status::Ok;
 			}
 
 			auto elapsed = duration_cast<milliseconds>(high_resolution_clock::now() - startTime);
 
 			if (timeout <= elapsed)
 			{
-				return WaitResult::Timeout;
+				return Status::Timeout;
 			}
 
 			std::cv_status status = cv_.wait_for(lock, timeout - elapsed);
 
 			if (status == std::cv_status::timeout)
 			{
-				return WaitResult::Timeout;
+				return Status::Timeout;
 			}
 		}
 	}
 
-	WaitResult WaitPop(unique_lock& lock, int& code)
+	Status WaitPop(unique_lock& lock, int& code)
 	{
 		while (true)
 		{
@@ -136,19 +136,19 @@ public:
 			{
 				code = receivingInterrupts_.front();
 				receivingInterrupts_.pop_front();
-				return WaitResult::Interrupted;
+				return Status::Interrupted;
 			}
 
 			if (!objects_.empty())
 			{
-				return WaitResult::Ok;
+				return Status::Ok;
 			}
 
 			cv_.wait(lock);
 		}
 	}
 
-	WaitResult WaitPopFor(unique_lock& lock, milliseconds timeout, int& code)
+	Status WaitPopFor(unique_lock& lock, milliseconds timeout, int& code)
 	{
 		auto startTime = high_resolution_clock::now();
 
@@ -158,26 +158,26 @@ public:
 			{
 				code = receivingInterrupts_.front();
 				receivingInterrupts_.pop_front();
-				return WaitResult::Interrupted;
+				return Status::Interrupted;
 			}
 
 			if (!objects_.empty())
 			{
-				return WaitResult::Ok;
+				return Status::Ok;
 			}
 
 			auto elapsed = duration_cast<milliseconds>(high_resolution_clock::now() - startTime);
 
 			if (timeout <= elapsed)
 			{
-				return WaitResult::Timeout;
+				return Status::Timeout;
 			}
 
 			std::cv_status status = cv_.wait_for(lock, timeout - elapsed);
 
 			if (status == std::cv_status::timeout)
 			{
-				return WaitResult::Timeout;
+				return Status::Timeout;
 			}
 		}
 	}
@@ -241,26 +241,26 @@ bool ObjectQueue::SendingEnd::TrySend(Referencable* obj)
 	return m_impl->TryPush(obj);
 }
 
-WaitResult ObjectQueue::SendingEnd::Wait(int& code)
+ObjectQueue::Status ObjectQueue::SendingEnd::Wait(int& code)
 {
 	unique_lock lock(m_impl->mutex_);
 	return m_impl->WaitPush(lock, code);
 }
 
-WaitResult ObjectQueue::SendingEnd::WaitFor(std::chrono::milliseconds timeout, int& code)
+ObjectQueue::Status ObjectQueue::SendingEnd::WaitFor(std::chrono::milliseconds timeout, int& code)
 {
 	unique_lock lock(m_impl->mutex_);
 	return m_impl->WaitPushFor(lock, timeout, code);
 }
 
-WaitResult ObjectQueue::SendingEnd::Send(Referencable* obj, int& code)
+ObjectQueue::Status ObjectQueue::SendingEnd::Send(Referencable* obj, int& code)
 {
 	unique_lock lock(m_impl->mutex_);
 
-	WaitResult result = m_impl->WaitPush(lock, code);
-	_ASSERTE(result != WaitResult::Timeout);
+	Status result = m_impl->WaitPush(lock, code);
+	_ASSERTE(result != Status::Timeout);
 
-	if (result == WaitResult::Ok)
+	if (result == Status::Ok)
 	{
 		bool br = m_impl->TryPush(obj);
 		_ASSERTE(br);
@@ -269,13 +269,13 @@ WaitResult ObjectQueue::SendingEnd::Send(Referencable* obj, int& code)
 	return result;
 }
 
-WaitResult ObjectQueue::SendingEnd::SendFor(Referencable* obj, std::chrono::milliseconds timeout, int& code)
+ObjectQueue::Status ObjectQueue::SendingEnd::SendFor(Referencable* obj, std::chrono::milliseconds timeout, int& code)
 {
 	unique_lock lock(m_impl->mutex_);
 
-	WaitResult result = m_impl->WaitPushFor(lock, timeout, code);
+	Status result = m_impl->WaitPushFor(lock, timeout, code);
 
-	if (result == WaitResult::Ok)
+	if (result == Status::Ok)
 	{
 		bool br = m_impl->TryPush(obj);
 		_ASSERTE(br);
@@ -302,26 +302,26 @@ bool ObjectQueue::ReceivingEnd::TryReceive(Referencable*& obj)
 	return m_impl->TryPop(obj);
 }
 
-WaitResult ObjectQueue::ReceivingEnd::Wait(int& code)
+ObjectQueue::Status ObjectQueue::ReceivingEnd::Wait(int& code)
 {
 	unique_lock lock(m_impl->mutex_);
 	return m_impl->WaitPop(lock, code);
 }
 
-WaitResult ObjectQueue::ReceivingEnd::WaitFor(std::chrono::milliseconds timeout, int& code)
+ObjectQueue::Status ObjectQueue::ReceivingEnd::WaitFor(std::chrono::milliseconds timeout, int& code)
 {
 	unique_lock lock(m_impl->mutex_);
 	return m_impl->WaitPopFor(lock, timeout, code);
 }
 
-WaitResult ObjectQueue::ReceivingEnd::Receive(Referencable*& obj, int& code)
+ObjectQueue::Status ObjectQueue::ReceivingEnd::Receive(Referencable*& obj, int& code)
 {
 	unique_lock lock(m_impl->mutex_);
 
-	WaitResult result = m_impl->WaitPop(lock, code);
-	_ASSERTE(result != WaitResult::Timeout);
+	Status result = m_impl->WaitPop(lock, code);
+	_ASSERTE(result != Status::Timeout);
 
-	if (result == WaitResult::Ok)
+	if (result == Status::Ok)
 	{
 		bool br = m_impl->TryPop(obj);
 		_ASSERTE(br);
@@ -330,13 +330,13 @@ WaitResult ObjectQueue::ReceivingEnd::Receive(Referencable*& obj, int& code)
 	return result;
 }
 
-WaitResult ObjectQueue::ReceivingEnd::ReceiveFor(Referencable*& obj, std::chrono::milliseconds timeout, int& code)
+ObjectQueue::Status ObjectQueue::ReceivingEnd::ReceiveFor(Referencable*& obj, std::chrono::milliseconds timeout, int& code)
 {	
 	unique_lock lock(m_impl->mutex_);
 
-	WaitResult result = m_impl->WaitPop(lock, code);
+	Status result = m_impl->WaitPop(lock, code);
 
-	if (result == WaitResult::Ok)
+	if (result == Status::Ok)
 	{
 		bool br = m_impl->TryPop(obj);
 		_ASSERTE(br);

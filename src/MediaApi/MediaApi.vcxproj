@@ -204,7 +204,8 @@
     <ClInclude Include="DX11RenderTarget.h" />
     <ClInclude Include="FFmpegHelper.h" />
     <ClInclude Include="Graphics.h" />
-    <ClInclude Include="SourceStream.h" />
+    <ClInclude Include="MediaPacket.h" />
+    <ClInclude Include="StreamDescriptor.h" />
     <ClInclude Include="TargetView.h" />
     <ClInclude Include="FFmpeg.h" />
     <ClInclude Include="RenderTarget.h" />
@@ -222,7 +223,8 @@
     <ClCompile Include="DX11Graphics.cpp" />
     <ClCompile Include="DX11RenderTarget.cpp" />
     <ClCompile Include="Graphics.cpp" />
-    <ClCompile Include="SourceStream.cpp" />
+    <ClCompile Include="MediaPacket.cpp" />
+    <ClCompile Include="StreamDescriptor.cpp" />
     <ClCompile Include="TargetView.cpp" />
     <ClCompile Include="MediaApi.cpp" />
     <ClCompile Include="MediaSource.cpp" />

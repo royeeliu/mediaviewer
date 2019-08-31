@@ -90,9 +90,6 @@
     <ClInclude Include="MediaSource.h">
       <Filter>MediaSource</Filter>
     </ClInclude>
-    <ClInclude Include="SourceStream.h">
-      <Filter>MediaSource</Filter>
-    </ClInclude>
     <ClInclude Include="pch.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -104,6 +101,12 @@
     </ClInclude>
     <ClInclude Include="FFmpeg.h">
       <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="MediaPacket.h">
+      <Filter>MediaSource</Filter>
+    </ClInclude>
+    <ClInclude Include="StreamDescriptor.h">
+      <Filter>MediaSource</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -140,10 +143,13 @@
     <ClCompile Include="pch.cpp">
       <Filter>头文件</Filter>
     </ClCompile>
-    <ClCompile Include="SourceStream.cpp">
+    <ClCompile Include="MediaSource.cpp">
       <Filter>MediaSource</Filter>
     </ClCompile>
-    <ClCompile Include="MediaSource.cpp">
+    <ClCompile Include="MediaPacket.cpp">
+      <Filter>MediaSource</Filter>
+    </ClCompile>
+    <ClCompile Include="StreamDescriptor.cpp">
       <Filter>MediaSource</Filter>
     </ClCompile>
   </ItemGroup>

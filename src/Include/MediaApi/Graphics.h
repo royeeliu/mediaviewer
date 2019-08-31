@@ -9,9 +9,6 @@
 extern "C" {
 #endif // _cplusplus
 
-struct MAPI_Graphics;
-struct MAPI_RenderTarget;
-
 MEDIA_API MAPI_Graphics* MAPI_Graphics_Create() noexcept;
 MEDIA_API void MAPI_Graphics_Destroy(MAPI_Graphics** handle) noexcept;
 MEDIA_API void MAPI_Graphics_Initialize(MAPI_Graphics* handle, MAPI_TargetView const* target_view, MAPI_Error* err) noexcept;
