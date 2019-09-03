@@ -31,6 +31,9 @@
     <Filter Include="MediaSource">
       <UniqueIdentifier>{fb2fa816-2d46-45f9-bae1-6181e41299c6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MediaType">
+      <UniqueIdentifier>{2f48fb1b-0f4e-4d78-bb89-226f7a28e577}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Include\MediaApi.h">
@@ -108,6 +111,12 @@
     <ClInclude Include="StreamDescriptor.h">
       <Filter>MediaSource</Filter>
     </ClInclude>
+    <ClInclude Include="MediaAttributes.h">
+      <Filter>MediaType</Filter>
+    </ClInclude>
+    <ClInclude Include="FFmpegMediaAttributes.h">
+      <Filter>MediaType</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -151,6 +160,9 @@
     </ClCompile>
     <ClCompile Include="StreamDescriptor.cpp">
       <Filter>MediaSource</Filter>
+    </ClCompile>
+    <ClCompile Include="FFmpegMediaAttributes.cpp">
+      <Filter>MediaType</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

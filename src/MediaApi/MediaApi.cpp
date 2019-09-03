@@ -2,6 +2,7 @@
 #include "Include/MediaApi.h"
 #include "MediaSource.h"
 #include "MediaPacket.h"
+#include "FFmpegMediaAttributes.h"
 #include "Presenter.h"
 #include "TargetView.h"
 #include "Graphics.h"
@@ -42,6 +43,8 @@ struct MAPI_Graphics : MediaStruct<Graphics> {};
 struct MAPI_RenderTarget : MediaStruct<RenderTarget*> {};
 struct MAPI_StreamDescriptor : MediaStruct<StreamDescriptor*> {};
 struct MAPI_MediaPacket : MediaStruct<std::unique_ptr<MediaPacket>> {};
+struct MAPI_MediaAttributes : MediaStruct<std::unique_ptr<MediaAttributes>>{};
+
 
 MEDIA_API MAPI_MediaSource* MAPI_MediaSource_Create() noexcept
 {
@@ -111,6 +114,18 @@ MEDIA_API uint32_t MAPI_StreamDescriptor_GetId(MAPI_StreamDescriptor* obj) noexc
 MEDIA_API void MAPI_StreamDescriptor_GetTimebase(MAPI_StreamDescriptor* obj, MAPI_Rational* timebase) noexcept
 {
 	*timebase = obj->impl->GetTimebase();
+}
+
+MEDIA_API MAPI_MediaAttributes* MAPI_StreamDescriptor_GetMediaAttributes(MAPI_StreamDescriptor* obj) noexcept
+{
+	auto ptr = new MAPI_MediaAttributes{};
+	ptr->impl = std::move(obj->impl->GetMediaAttributes());
+	return ptr;
+}
+
+MEDIA_API void MAPI_MediaAttributes_Destroy(MAPI_MediaAttributes** obj) noexcept
+{
+	SafeDelete(obj);
 }
 
 MEDIA_API void MAPI_MediaPacket_Destroy(MAPI_MediaPacket** obj) noexcept

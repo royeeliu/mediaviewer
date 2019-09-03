@@ -5,10 +5,10 @@
 
 namespace mapi {
 
-using Error = MAPI_Error;
 using ERROR_CODE = MAPI_ERROR_CODE;
-using Rect = MAPI_Rect;
 using MediaType = MAPI_MediaType;
+using Error = MAPI_Error;
+using Rect = MAPI_Rect;
 using Rational = MAPI_Rational;
 
 namespace Color {

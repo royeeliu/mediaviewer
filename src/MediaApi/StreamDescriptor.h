@@ -3,6 +3,7 @@
 #include "Types.h"
 #include "Uncopyable.h"
 #include "FFmpeg.h"
+#include "MediaAttributes.h"
 
 namespace mapi {
 
@@ -15,6 +16,7 @@ public:
 	uint32_t GetId() const { return m_stream->id; }
 	MediaType GetMediaType() const;
 	Rational GetTimebase() const;
+	std::unique_ptr<MediaAttributes> GetMediaAttributes() const;
 
 private:
 	std::shared_ptr<AVFormatContext>	m_avfx;

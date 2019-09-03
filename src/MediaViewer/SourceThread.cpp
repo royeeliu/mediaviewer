@@ -54,7 +54,7 @@ void VideoViewer::SourceThread::DoWorkerThreadLoop()
 				continue;
 			}
 
-			int streamIndex = MAPI_MediaPacket_GetPts(packet);
+			int streamIndex = MAPI_MediaPacket_GetStreamIndex(packet);
 
 			if (streamIndex == m_streamIndex)
 			{

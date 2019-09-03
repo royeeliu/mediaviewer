@@ -58,6 +58,14 @@ class VideoViewer
 
 	using CommandObject = Leo::ReferenceGuard<Command>;
 
+	enum class MediaObjectType
+	{
+		Invalid = 0,
+		Packet,
+		Frame,
+		MediaType,
+	};
+
 public:
 	explicit
 	VideoViewer(ClientView& displayWindow);

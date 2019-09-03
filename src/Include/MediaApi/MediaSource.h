@@ -21,6 +21,9 @@ MEDIA_API void MAPI_StreamDescriptor_Destroy(MAPI_StreamDescriptor** obj) noexce
 MEDIA_API MAPI_MediaType MAPI_StreamDescriptor_GetMediaType(MAPI_StreamDescriptor* obj) noexcept;
 MEDIA_API uint32_t MAPI_StreamDescriptor_GetId(MAPI_StreamDescriptor* obj) noexcept;
 MEDIA_API void MAPI_StreamDescriptor_GetTimebase(MAPI_StreamDescriptor* obj, MAPI_Rational* timebase) noexcept;
+MEDIA_API MAPI_MediaAttributes* MAPI_StreamDescriptor_GetMediaAttributes(MAPI_StreamDescriptor* obj) noexcept;
+
+MEDIA_API void MAPI_MediaAttributes_Destroy(MAPI_MediaAttributes** obj) noexcept;
 
 MEDIA_API void MAPI_MediaPacket_Destroy(MAPI_MediaPacket** obj) noexcept;
 MEDIA_API uint32_t MAPI_MediaPacket_GetStreamIndex(MAPI_MediaPacket* obj) noexcept;
