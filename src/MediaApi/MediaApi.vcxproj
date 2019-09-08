@@ -205,7 +205,7 @@
     <ClInclude Include="FFmpegHelper.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="MediaPacket.h" />
-    <ClInclude Include="MediaAttributes.h" />
+    <ClInclude Include="MediaDescriptor.h" />
     <ClInclude Include="FFmpegMediaAttributes.h" />
     <ClInclude Include="StreamDescriptor.h" />
     <ClInclude Include="TargetView.h" />

@@ -2,7 +2,7 @@
 
 namespace mapi {
 
-class MediaAttributes
+class MediaDescriptor
 {
 public:
 	enum class ClassType
@@ -15,7 +15,7 @@ public:
 	virtual ClassType GetClassType() = 0;
 
 public:
-	virtual ~MediaAttributes() {};
+	virtual ~MediaDescriptor() {};
 };
 
 } // End of namespace

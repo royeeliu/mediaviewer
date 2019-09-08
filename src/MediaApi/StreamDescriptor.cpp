@@ -31,7 +31,7 @@ Rational StreamDescriptor::GetTimebase() const
 	return FFmpegHelper::ConvertRational(m_stream->time_base);
 }
 
-std::unique_ptr<MediaAttributes> StreamDescriptor::GetMediaAttributes() const
+std::unique_ptr<MediaDescriptor> StreamDescriptor::GetMediaAttributes() const
 {
 	return std::make_unique<FFmpegMediaAttributes>(m_stream);
 }

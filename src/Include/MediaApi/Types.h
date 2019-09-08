@@ -43,7 +43,7 @@ struct MAPI_MediaSource;
 struct MAPI_Presenter;
 struct MAPI_StreamDescriptor;
 
-struct MAPI_MediaAttributes;
+struct MAPI_MediaDescriptor;
 struct MAPI_MediaPacket;
 struct MAPI_MediaFrame;
 

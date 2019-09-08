@@ -43,7 +43,7 @@ struct MAPI_Graphics : MediaStruct<Graphics> {};
 struct MAPI_RenderTarget : MediaStruct<RenderTarget*> {};
 struct MAPI_StreamDescriptor : MediaStruct<StreamDescriptor*> {};
 struct MAPI_MediaPacket : MediaStruct<std::unique_ptr<MediaPacket>> {};
-struct MAPI_MediaAttributes : MediaStruct<std::unique_ptr<MediaAttributes>>{};
+struct MAPI_MediaDescriptor : MediaStruct<std::unique_ptr<MediaDescriptor>>{};
 
 
 MEDIA_API MAPI_MediaSource* MAPI_MediaSource_Create() noexcept
@@ -116,14 +116,14 @@ MEDIA_API void MAPI_StreamDescriptor_GetTimebase(MAPI_StreamDescriptor* obj, MAP
 	*timebase = obj->impl->GetTimebase();
 }
 
-MEDIA_API MAPI_MediaAttributes* MAPI_StreamDescriptor_GetMediaAttributes(MAPI_StreamDescriptor* obj) noexcept
+MEDIA_API MAPI_MediaDescriptor* MAPI_StreamDescriptor_GetMediaDescriptor(MAPI_StreamDescriptor* obj) noexcept
 {
-	auto ptr = new MAPI_MediaAttributes{};
+	auto ptr = new MAPI_MediaDescriptor{};
 	ptr->impl = std::move(obj->impl->GetMediaAttributes());
 	return ptr;
 }
 
-MEDIA_API void MAPI_MediaAttributes_Destroy(MAPI_MediaAttributes** obj) noexcept
+MEDIA_API void MAPI_MediaDescriptor_Destroy(MAPI_MediaDescriptor** obj) noexcept
 {
 	SafeDelete(obj);
 }

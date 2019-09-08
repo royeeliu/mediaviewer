@@ -16,14 +16,21 @@ private:
 	void CreateResource();
 	void DestroyResource();
 	ThreadLoopStatus ProcessCommand(CommandObject& cmd);
+	ThreadLoopStatus ProcessInterrupt(InterruptCode code);
 	void LoadFile(std::wstring const& fileName);
+	void ReadPacket();
 
 private:
-	std::thread							m_thread;
-	ObjectQueue::SendingEnd				m_packetChannel;
-	CommandChannel::ReceivingEnd		m_commandChannel;
-	bool								m_started = false;
-	MAPI_MediaSource*					m_mediaSource = nullptr;
-	uint32_t							m_streamIndex = 0;
-	uint32_t							m_packetCount = 0;
+	using MediaObjectList = std::list<Leo::ReferenceGuard<MediaObject>>;
+
+	std::thread								m_thread;
+	ObjectQueue::SendingEnd					m_packetChannel;
+	CommandChannel::ReceivingEnd			m_commandChannel;
+	MediaObjectList							m_packetsToSend;
+	bool									m_started = false;
+	std::shared_ptr<MAPI_MediaSource>		m_mediaSource;
+	std::shared_ptr<MAPI_MediaDescriptor>	m_videoMediaDesc;
+	uint32_t								m_videoStreamIndex = 0;
+	uint32_t								m_videoPacketCount = 0;
+
 };

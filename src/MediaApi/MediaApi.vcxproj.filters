@@ -111,10 +111,10 @@
     <ClInclude Include="StreamDescriptor.h">
       <Filter>MediaSource</Filter>
     </ClInclude>
-    <ClInclude Include="MediaAttributes.h">
+    <ClInclude Include="FFmpegMediaAttributes.h">
       <Filter>MediaType</Filter>
     </ClInclude>
-    <ClInclude Include="FFmpegMediaAttributes.h">
+    <ClInclude Include="MediaDescriptor.h">
       <Filter>MediaType</Filter>
     </ClInclude>
   </ItemGroup>

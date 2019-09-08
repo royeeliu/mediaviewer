@@ -3,11 +3,11 @@
 #include "Types.h"
 #include "Uncopyable.h"
 #include "FFmpeg.h"
-#include "MediaAttributes.h"
+#include "MediaDescriptor.h"
 
 namespace mapi {
 
-class FFmpegMediaAttributes : public MediaAttributes
+class FFmpegMediaAttributes : public MediaDescriptor
 {
 public:
 	FFmpegMediaAttributes(AVStream* stream);
