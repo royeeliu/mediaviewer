@@ -21,6 +21,10 @@ VideoViewer::VideoViewer(ClientView& displayWindow)
 	m_sourceThread = std::make_unique<SourceThread>(
 		ObjectQueue::SendingEnd(m_packtChannel),
 		CommandChannel::ReceivingEnd(sourceCommandChannel));
+	m_decodeThread = std::make_unique<DecodeThread>(
+		ObjectQueue::SendingEnd(m_frameChannel),
+		ObjectQueue::ReceivingEnd(m_packtChannel)
+		);
 	m_renderThread = std::make_unique<RenderThread>(
 		ObjectQueue::ReceivingEnd(m_frameChannel),
 		(HWND)m_displayWindow);

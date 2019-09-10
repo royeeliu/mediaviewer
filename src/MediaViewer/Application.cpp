@@ -3,6 +3,7 @@
 #include "MainFrame.h"
 #include "VideoViewer.h"
 #include "Common.h"
+#include "Dispatcher.h"
 
 #define MAX_LOADSTRING 100
 
@@ -53,16 +54,18 @@ void Application::Initialize(HINSTANCE hinst)
 	m_mainFrame->SetIcon(hIcon);
 	m_mainFrame->SetIcon(hIconSmall, FALSE);
 	m_mainFrame->CenterWindow();
+	m_mainFrame->UpdateWindow();
 
 	m_videoViewer = std::make_unique<VideoViewer>(*(m_mainFrame->GetClientView()));
 
 	m_mainFrame->DestroyedEvent.connect([this] { OnMainFrameDestroyed(); });
 	m_mainFrame->LoadVideoEvent.connect([this](const wchar_t* fileName) { OnLoadVideo(fileName); });
+
+	MainThread::Post([this] { ParseCommandLine(); });
 }
 
 void Application::Run(int show)
 {
-	m_mainFrame->UpdateWindow();
 	m_mainFrame->ShowWindow(show);
 
 	HACCEL hAccelTable = LoadAccelerators(m_hinstance, MAKEINTRESOURCE(IDC_MEDIAVIEWER));
@@ -133,4 +136,18 @@ void Application::OnLoadVideo(const wchar_t* fileName)
 	}
 
 	m_videoViewer->LoadFile(fileName);
+}
+
+void Application::ParseCommandLine()
+{
+	int argCount = 0;
+	wchar_t** argList = ::CommandLineToArgvW(GetCommandLine(), &argCount);
+
+	if (argCount > 1)
+	{
+		wchar_t const* fileName = argList[1];
+		OnLoadVideo(fileName);
+	}
+
+	::LocalFree(argList);
 }

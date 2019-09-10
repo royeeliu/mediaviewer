@@ -129,6 +129,11 @@ public:
 		return m_ptr == ptr;
 	}
 
+	bool operator!=(T const* ptr) const
+	{
+		return m_ptr != ptr;
+	}
+
 	T& operator*() const
 	{
 		_ASSERTE(m_ptr != nullptr);
@@ -146,7 +151,7 @@ public:
 		return m_ptr;
 	}
 
-	T** GetAdress() 
+	T** GetAddress() 
 	{
 		_ASSERTE(m_ptr == nullptr);
 		return &m_ptr;

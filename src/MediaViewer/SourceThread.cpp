@@ -43,31 +43,14 @@ void VideoViewer::SourceThread::DoWorkerThreadLoop()
 			continue;
 		}
 
-		while (m_packetsToSend.empty())
+		if (!m_packetsToSend.empty())
 		{
-			auto packet = m_packetsToSend.front();
+			status = SendPackets();
 
-			int code = static_cast<int>(InterruptCode::None);
-			auto channelStatus = m_packetChannel.Send(packet.Get(), code);
-
-			if (channelStatus == ObjectQueueStatus::Ok)
+			if (status != ThreadLoopStatus::Continue)
 			{
-				m_packetsToSend.pop_front();
+				continue;
 			}
-			else if (channelStatus == ObjectQueueStatus::Interrupted)
-			{
-				status = ProcessInterrupt(static_cast<InterruptCode>(code));
-				break;
-			}
-			else
-			{
-				ASSERT(false);
-			}
-		}
-
-		if (status != ThreadLoopStatus::Continue)
-		{
-			continue;
 		}
 
 		ASSERT(m_started);
@@ -119,6 +102,35 @@ VideoViewer::ThreadLoopStatus VideoViewer::SourceThread::ProcessInterrupt(Interr
 	}
 }
 
+VideoViewer::ThreadLoopStatus VideoViewer::SourceThread::SendPackets()
+{
+	ThreadLoopStatus status = ThreadLoopStatus::Continue;
+
+	while (!m_packetsToSend.empty())
+	{
+		auto packet = m_packetsToSend.front();
+
+		int code = static_cast<int>(InterruptCode::None);
+		auto channelStatus = m_packetChannel.Send(packet.Get(), code);
+
+		if (channelStatus == ObjectQueueStatus::Ok)
+		{
+			m_packetsToSend.pop_front();
+		}
+		else if (channelStatus == ObjectQueueStatus::Interrupted)
+		{
+			status = ProcessInterrupt(static_cast<InterruptCode>(code));
+			break;
+		}
+		else
+		{
+			ASSERT(false);
+		}
+	}
+
+	return status;
+}
+
 void VideoViewer::SourceThread::LoadFile(std::wstring const& fileName)
 {
 	_ASSERTE(m_mediaSource != nullptr);
@@ -162,7 +174,7 @@ void VideoViewer::SourceThread::LoadFile(std::wstring const& fileName)
 	auto msgObj = new MediaMessageObject{ MediaMessage::SessionStart };
 	auto mediaDescObj = new MediaDescriptorObject{ m_videoMediaDesc };
 	m_packetsToSend.push_back(Leo::MakeReferenceGuard(static_cast<MediaObject*>(msgObj)));
-	m_packetsToSend.push_back(Leo::MakeReferenceGuard(static_cast<MediaObject*>(msgObj)));
+	m_packetsToSend.push_back(Leo::MakeReferenceGuard(static_cast<MediaObject*>(mediaDescObj)));
 
 	m_started = true;
 }
@@ -191,7 +203,7 @@ void VideoViewer::SourceThread::ReadPacket()
 
 	int64_t pts = MAPI_MediaPacket_GetPts(packet.get());
 	int64_t dts = MAPI_MediaPacket_GetDts(packet.get());
-	WPRINTF(L"\r[%u]pts: %lld, \tdts: %lld                                      ", m_videoPacketCount, pts, dts);
+	//WPRINTF(L"\r[%u]pts: %lld, \tdts: %lld                                      ", m_videoPacketCount, pts, dts);
 	m_videoPacketCount++;
 
 	m_packetsToSend.push_back(

@@ -72,20 +72,20 @@ class VideoViewer
 	struct MediaObject : Leo::Referencable
 	{
 		MediaObjectType const type;
-		MediaObject(MediaObjectType type_) : type(type_){}
+		MediaObject(MediaObjectType typeValue) : type(typeValue){}
 	};
 
-	template<MediaObjectType type>
+	template<MediaObjectType typeValue>
 	struct MediaObjectImpl : MediaObject
 	{
-		MediaObjectImpl() : MediaObject(type){}
+		MediaObjectImpl() : MediaObject(typeValue){}
 	};
 
 	enum class MediaMessage : int
 	{
-		None,
+		None = 0,
 		SessionStart,
-		SessionEnd,
+		StreamEnd,
 	};
 
 	struct MediaMessageObject : MediaObjectImpl<MediaObjectType::Message>

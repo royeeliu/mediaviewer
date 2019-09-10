@@ -27,6 +27,7 @@ public:
 private:
 	void OnMainFrameDestroyed();
 	void OnLoadVideo(const wchar_t* fileName);
+	void ParseCommandLine();
 
 private:
 	HINSTANCE						m_hinstance = nullptr;

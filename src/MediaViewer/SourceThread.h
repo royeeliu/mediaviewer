@@ -17,6 +17,7 @@ private:
 	void DestroyResource();
 	ThreadLoopStatus ProcessCommand(CommandObject& cmd);
 	ThreadLoopStatus ProcessInterrupt(InterruptCode code);
+	ThreadLoopStatus SendPackets();
 	void LoadFile(std::wstring const& fileName);
 	void ReadPacket();
 

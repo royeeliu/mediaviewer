@@ -35,7 +35,7 @@ void VideoViewer::RenderThread::DoThreadLoop()
 	{
 		ReferenceGuard<Referencable> object;
 		int interruptCode = 0;
-		auto waitResult = m_frameChannel.Receive(*object.GetAdress(), interruptCode);
+		auto waitResult = m_frameChannel.Receive(*object.GetAddress(), interruptCode);
 
 		switch (waitResult)
 		{
