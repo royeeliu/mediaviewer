@@ -2,8 +2,10 @@
 #include "DecodeThread.h"
 #include "Common.h"
 #include "Dispatcher.h"
+#include "Include/MediaApiHelper.h"
 
 using namespace Leo;
+using namespace MediaApiHelper;
 
 VideoViewer::DecodeThread::DecodeThread(ObjectQueue::SendingEnd&& frameSender, ObjectQueue::ReceivingEnd&& packetReceiver)
 	: m_frameSender(std::move(frameSender))
@@ -60,6 +62,7 @@ void VideoViewer::DecodeThread::CreateResource()
 
 void VideoViewer::DecodeThread::DestroyResource()
 {
+	m_decoder.reset();
 }
 
 VideoViewer::ThreadLoopStatus VideoViewer::DecodeThread::ProcessInterrupt(InterruptCode code)
@@ -127,6 +130,35 @@ void VideoViewer::DecodeThread::ProcessPacket(MediaPacketObject* packet)
 {
 	m_packetCount++;
 	PRINTF("\rpackets: %d", m_packetCount);
+
+	if (!m_decoder)
+	{
+		return;
+	}
+
+	MAPI_Error err{};
+	MAPI_Decoder_SendPacket(m_decoder.get(), packet->packet.get(), &err);
+
+	if (err.code != MAPI_NO_ERROR)
+	{
+		SHOW_ERROR_MESSAGE(L"MAPI_Decoder_SendPacket failed: %s", FormatError(err));
+		return;
+	}
+
+	auto frame = std::shared_ptr<MAPI_MediaFrame>(
+		MAPI_Decoder_ReceiveFrame(m_decoder.get(), &err),
+		[](MAPI_MediaFrame* ptr) { MAPI_MediaFrame_Destroy(&ptr); });
+
+	if (err.code != MAPI_NO_ERROR)
+	{
+		SHOW_ERROR_MESSAGE(L"MAPI_Decoder_ReceiveFrame failed: %s", FormatError(err));
+		return;
+	}
+
+	if (frame != nullptr)
+	{
+		PushObjectToSendingList(new MediaFrameObject{ std::move(frame) });
+	}
 }
 
 void VideoViewer::DecodeThread::ProcessMessage(MediaMessageObject* msg)
@@ -136,10 +168,10 @@ void VideoViewer::DecodeThread::ProcessMessage(MediaMessageObject* msg)
 	case MediaMessage::None:
 		break;
 	case MediaMessage::SessionStart:
-		OnSessionStart();
+		OnSessionStart(msg);
 		break;
 	case MediaMessage::StreamEnd:
-		OnStreamEnd();
+		OnStreamEnd(msg);
 		break;
 	}
 }
@@ -147,20 +179,53 @@ void VideoViewer::DecodeThread::ProcessMessage(MediaMessageObject* msg)
 void VideoViewer::DecodeThread::ProcessMediaDescriptor(MediaDescriptorObject* desc)
 {
 	PRINTF(".... Set media descriptor\n");
+	_ASSERTE(m_status == Status::Starting);
+
+	CreateDecoder(desc->media.get());
 	SetStatus(Status::Started);
+
+	auto outputDesc = std::shared_ptr<MAPI_MediaDescriptor>(
+		MAPI_Decoder_GetOutputMediaDescriptor(m_decoder.get()),
+		[](MAPI_MediaDescriptor* ptr) { MAPI_MediaDescriptor_Destroy(&ptr); });
+	PushObjectToSendingList(new MediaDescriptorObject{ std::move(outputDesc) });
 }
 
-void VideoViewer::DecodeThread::OnSessionStart()
+void VideoViewer::DecodeThread::OnSessionStart(MediaMessageObject* msg)
 {
 	PRINTF(".... Segment start\n");
 	SetStatus(Status::Starting);
+	PushObjectToSendingList(Leo::AddReference(msg));
 }
 
-void VideoViewer::DecodeThread::OnStreamEnd()
+void VideoViewer::DecodeThread::OnStreamEnd(MediaMessageObject* msg)
 {
+	PushObjectToSendingList(Leo::AddReference(msg));
 }
 
 void VideoViewer::DecodeThread::SetStatus(Status status)
 {
 	m_status = status;
+}
+
+void VideoViewer::DecodeThread::CreateDecoder(MAPI_MediaDescriptor* mediaDesc)
+{
+	auto decoder = std::shared_ptr<MAPI_Decoder>(
+		MAPI_Decoder_Create(),
+		[](MAPI_Decoder* ptr) { MAPI_Decoder_Destroy(&ptr); });
+
+	MAPI_Error err{};
+	MAPI_Decoder_Initialize(decoder.get(), mediaDesc, nullptr, &err);
+
+	if (err.code != MAPI_NO_ERROR)
+	{
+		SHOW_ERROR_MESSAGE(L"MAPI_Decoder_Initialize failed: %s", FormatError(err));
+		return;
+	}
+
+	m_decoder = decoder;
+}
+
+void VideoViewer::DecodeThread::PushObjectToSendingList(MediaObject*&& object)
+{
+	m_framesToSend.push_back(Leo::MakeReferenceGuard(std::move(object)));
 }

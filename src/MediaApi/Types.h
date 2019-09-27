@@ -19,8 +19,11 @@ class TargetView;
 class RenderTarget;
 class DX11Graphics;
 class DX11RenderTarget;
+class Graphics;
+class MediaDescriptor;
 
 class MediaPacket;
+class MediaFrame;
 
 
 } // End of namespace

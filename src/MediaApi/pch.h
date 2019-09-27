@@ -12,6 +12,9 @@
 #include "Include/MediaApi/Error.h"
 
 #include <stdio.h>
+
+// C++ Headers
 #include <memory>
+#include <thread>
 
 #endif //PCH_H

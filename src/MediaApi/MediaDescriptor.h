@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Types.h"
+
 namespace mapi {
 
 class MediaDescriptor
@@ -9,15 +11,15 @@ public:
 	{
 		None = 0,
 		FFmpeg,
+		UncopressedVideo,
 	};
 
 public:
-	virtual ClassType GetClassType() = 0;
+	virtual ClassType GetClassType() const = 0;
+	virtual MediaType GetMediaType() const = 0;
 
-public:
+protected:
 	virtual ~MediaDescriptor() {};
 };
 
 } // End of namespace
-
-

@@ -28,9 +28,12 @@ private:
 	void ProcessPacket(MediaPacketObject* packet);
 	void ProcessMessage(MediaMessageObject* msg);
 	void ProcessMediaDescriptor(MediaDescriptorObject* desc);
-	void OnSessionStart();
-	void OnStreamEnd();
+	void OnSessionStart(MediaMessageObject* msg);
+	void OnStreamEnd(MediaMessageObject* msg);
+
 	void SetStatus(Status status);
+	void CreateDecoder(MAPI_MediaDescriptor* mediaDesc);
+	void PushObjectToSendingList(MediaObject*&& object);
 
 private:
 	using MediaObjectList = std::list<Leo::ReferenceGuard<MediaObject>>;
@@ -41,5 +44,5 @@ private:
 	MediaObjectList							m_framesToSend;
 	Status									m_status = Status::Idl;
 	uint32_t								m_packetCount = 0;
+	std::shared_ptr<MAPI_Decoder>			m_decoder;
 };
-

@@ -42,6 +42,7 @@ struct MAPI_Rational
 struct MAPI_MediaSource;
 struct MAPI_Presenter;
 struct MAPI_StreamDescriptor;
+struct MAPI_Decoder;
 
 struct MAPI_MediaDescriptor;
 struct MAPI_MediaPacket;
@@ -49,4 +50,5 @@ struct MAPI_MediaFrame;
 
 struct MAPI_Graphics;
 struct MAPI_RenderTarget;
+struct MAPI_VideoRenderer;
 

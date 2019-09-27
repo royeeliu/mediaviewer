@@ -15,9 +15,9 @@ public:
 
 	void LoadFile(const char* u8_url, Error& err) noexcept;
 	uint32_t GetStreamCount() noexcept;
-	StreamDescriptor* GetStream(uint32_t index) noexcept;
+	StreamDescriptor* GetStreamDescriptor(uint32_t index) noexcept;
 	int32_t FindBestStream(MediaType type) noexcept;
-	std::unique_ptr<MediaPacket> ReadNextPacket(Error& err) noexcept;
+	std::shared_ptr<MediaPacket> ReadNextPacket(Error& err) noexcept;
 
 private:
 	using SourceStreamArray = std::vector<std::unique_ptr<StreamDescriptor>>;

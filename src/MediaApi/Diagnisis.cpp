@@ -12,6 +12,10 @@ void OnFatalError(const char* message, const char* file, int line, const char* f
 	terminate();
 }
 
+void SetErrorCode(Error& err, ERROR_CODE code, int detail, const char* message, const char* file, int line, const char* func)
+{
+}
+
 void mapi::ProcessFFmpegError(const char* api, int code, Error& err, const char* file, int line, const char* func)
 {
 	err = { MAPIERR_FAIL, code };

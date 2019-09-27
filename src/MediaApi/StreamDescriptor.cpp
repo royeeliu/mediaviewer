@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "StreamDescriptor.h"
-#include "FFmpegMediaAttributes.h"
+#include "FFmpegMediaDescriptor.h"
 #include "FFmpegHelper.h"
 #include "Diagnisis.h"
 #include "Common.h"
@@ -31,9 +31,9 @@ Rational StreamDescriptor::GetTimebase() const
 	return FFmpegHelper::ConvertRational(m_stream->time_base);
 }
 
-std::unique_ptr<MediaDescriptor> StreamDescriptor::GetMediaAttributes() const
+std::shared_ptr<MediaDescriptor> StreamDescriptor::GetMediaDescriptor() const
 {
-	return std::make_unique<FFmpegMediaAttributes>(m_stream);
+	return std::make_shared<FFmpegMediaDescriptor>(m_stream);
 }
 
 } // End of namespace

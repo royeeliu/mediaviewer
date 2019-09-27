@@ -48,7 +48,7 @@ uint32_t MediaSource::GetStreamCount() noexcept
 	return m_avfx->nb_streams;
 }
 
-StreamDescriptor* MediaSource::GetStream(uint32_t index) noexcept
+StreamDescriptor* MediaSource::GetStreamDescriptor(uint32_t index) noexcept
 {
 	return m_streams[index].get();
 }
@@ -64,12 +64,12 @@ int32_t MediaSource::FindBestStream(MediaType type) noexcept
 	return (index >= 0 ? index : -1);
 }
 
-std::unique_ptr<MediaPacket> MediaSource::ReadNextPacket(Error& err) noexcept
+std::shared_ptr<MediaPacket> MediaSource::ReadNextPacket(Error& err) noexcept
 {
 	AVPacket packet{};
 	av_init_packet(&packet);
 
-	std::unique_ptr<MediaPacket> mediaPacket{};
+	std::shared_ptr<MediaPacket> mediaPacket{};
 
 	do 
 	{
@@ -84,7 +84,7 @@ std::unique_ptr<MediaPacket> MediaSource::ReadNextPacket(Error& err) noexcept
 			av_packet_free(&refPacket);
 		}
 
-		mediaPacket = std::make_unique<MediaPacket>(
+		mediaPacket = std::make_shared<MediaPacket>(
 			refPacket, 
 			m_avfx->streams[refPacket->stream_index]->time_base);
 

@@ -2,6 +2,8 @@
 
 #include "MediaApi/Graphics.h"
 #include "MediaApi/MediaSource.h"
+#include "MediaApi/Decoder.h"
+#include "MediaApi/VideoRenderer.h"
 
 #ifdef __cplusplus
 extern "C" {

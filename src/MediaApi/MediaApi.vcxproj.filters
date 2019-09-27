@@ -34,6 +34,12 @@
     <Filter Include="MediaType">
       <UniqueIdentifier>{2f48fb1b-0f4e-4d78-bb89-226f7a28e577}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Decoder">
+      <UniqueIdentifier>{9f6590aa-c04e-4096-b6e3-11be5a8447f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="VideoRenderer">
+      <UniqueIdentifier>{75da18ca-c089-4354-a828-dbfbad15b515}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Include\MediaApi.h">
@@ -111,11 +117,38 @@
     <ClInclude Include="StreamDescriptor.h">
       <Filter>MediaSource</Filter>
     </ClInclude>
-    <ClInclude Include="FFmpegMediaAttributes.h">
-      <Filter>MediaType</Filter>
-    </ClInclude>
     <ClInclude Include="MediaDescriptor.h">
       <Filter>MediaType</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\MediaApi\Decoder.h">
+      <Filter>Include\MediaApi</Filter>
+    </ClInclude>
+    <ClInclude Include="FFmpegMediaDescriptor.h">
+      <Filter>MediaType</Filter>
+    </ClInclude>
+    <ClInclude Include="Decoder.h">
+      <Filter>Decoder</Filter>
+    </ClInclude>
+    <ClInclude Include="MediaFrame.h">
+      <Filter>Decoder</Filter>
+    </ClInclude>
+    <ClInclude Include="FFmpegVideoDecoder.h">
+      <Filter>Decoder</Filter>
+    </ClInclude>
+    <ClInclude Include="DecoderInterface.h">
+      <Filter>Decoder</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\MediaApi\VideoRenderer.h">
+      <Filter>Include\MediaApi</Filter>
+    </ClInclude>
+    <ClInclude Include="VideoRenderer.h">
+      <Filter>VideoRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="UncompressedVideoDescriptor.h">
+      <Filter>MediaType</Filter>
+    </ClInclude>
+    <ClInclude Include="VideoProcessor.h">
+      <Filter>VideoRenderer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -161,8 +194,26 @@
     <ClCompile Include="StreamDescriptor.cpp">
       <Filter>MediaSource</Filter>
     </ClCompile>
-    <ClCompile Include="FFmpegMediaAttributes.cpp">
+    <ClCompile Include="FFmpegMediaDescriptor.cpp">
       <Filter>MediaType</Filter>
+    </ClCompile>
+    <ClCompile Include="Decoder.cpp">
+      <Filter>Decoder</Filter>
+    </ClCompile>
+    <ClCompile Include="MediaFrame.cpp">
+      <Filter>Decoder</Filter>
+    </ClCompile>
+    <ClCompile Include="FFmpegVideoDecoder.cpp">
+      <Filter>Decoder</Filter>
+    </ClCompile>
+    <ClCompile Include="VideoRenderer.cpp">
+      <Filter>VideoRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="UncompressedVideoDescriptor.cpp">
+      <Filter>MediaType</Filter>
+    </ClCompile>
+    <ClCompile Include="VideoProcessor.cpp">
+      <Filter>VideoRenderer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

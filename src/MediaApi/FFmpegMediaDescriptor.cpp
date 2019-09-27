@@ -3,23 +3,23 @@
 #include "FFmpegHelper.h"
 #include "Diagnisis.h"
 #include "Common.h"
-#include "FFmpegMediaAttributes.h"
+#include "FFmpegMediaDescriptor.h"
 
 namespace mapi {
 
-FFmpegMediaAttributes::FFmpegMediaAttributes(AVStream* stream)
+FFmpegMediaDescriptor::FFmpegMediaDescriptor(AVStream* stream)
 {
 	m_codec = avcodec_parameters_alloc();
 	int result = avcodec_parameters_copy(m_codec, stream->codecpar);
 	_ENSURE(result >= 0);
 }
 
-FFmpegMediaAttributes::~FFmpegMediaAttributes()
+FFmpegMediaDescriptor::~FFmpegMediaDescriptor()
 {
 	avcodec_parameters_free(&m_codec);
 }
 
-MediaType FFmpegMediaAttributes::GetMediaType() const
+MediaType FFmpegMediaDescriptor::GetMediaType()  const
 {
 	return FFmpegHelper::ConvertMediaType(m_codec->codec_type);
 }

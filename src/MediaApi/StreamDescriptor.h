@@ -16,7 +16,7 @@ public:
 	uint32_t GetId() const { return m_stream->id; }
 	MediaType GetMediaType() const;
 	Rational GetTimebase() const;
-	std::unique_ptr<MediaDescriptor> GetMediaAttributes() const;
+	std::shared_ptr<MediaDescriptor> GetMediaDescriptor() const;
 
 private:
 	std::shared_ptr<AVFormatContext>	m_avfx;

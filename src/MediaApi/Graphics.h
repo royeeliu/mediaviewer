@@ -2,6 +2,7 @@
 
 #include "Types.h"
 #include "Uncopyable.h"
+#include "VideoProcessor.h"
 
 namespace mapi {
 
@@ -14,6 +15,8 @@ public:
 	void Initialize(std::unique_ptr<TargetView>&& target_view, Error& err) noexcept;
 	RenderTarget* BeginRendering(Error& err) noexcept;
 	void EndRendering(RenderTarget*& target, Error& err) noexcept;
+
+	std::unique_ptr<VideoProcessor> CreateProcessor(MediaDescriptor const& media, Error& err);
 
 private:
 	void Clear();

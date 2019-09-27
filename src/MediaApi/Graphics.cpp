@@ -4,6 +4,7 @@
 #include "RenderTarget.h"
 #include "DX11Graphics.h"
 #include "DX11RenderTarget.h"
+#include "VideoProcessor.h"
 #include "Common.h"
 
 namespace mapi {
@@ -64,6 +65,19 @@ void Graphics::EndRendering(RenderTarget*& target, Error& err) noexcept
 	ENSURE(target == m_renderTarget.get());
 	target = nullptr;
 	m_renderTarget->Present(err);
+}
+
+std::unique_ptr<VideoProcessor> Graphics::CreateProcessor(MediaDescriptor const& media, Error& err)
+{
+	auto processor = std::make_unique<VideoProcessor>(*m_graphics);
+	//processor->Initialize(media, err);
+
+	//if (err.code != MAPI_NO_ERROR)
+	//{
+	//	return std::unique_ptr<VideoProcessor>{};
+	//}
+
+	return processor;
 }
 
 void Graphics::Clear()
