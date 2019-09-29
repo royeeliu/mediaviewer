@@ -19,6 +19,7 @@ public:
 	ID3D11DeviceContext* GetDeviceContext() const { return m_deviceContext; }
 	IDXGISwapChain* GetSwapChain() const { return m_swapChain; }
 	ID3D11RenderTargetView* GetRenderTargetView() const { return m_renderTargetView; }
+	void UpdateSwapChain();
 
 private:
 	void CreateDeviceResouces(Error& err);
@@ -29,6 +30,7 @@ private:
 	D3D_DRIVER_TYPE					m_driverType = D3D_DRIVER_TYPE_NULL;
 	D3D_FEATURE_LEVEL				m_featureLevel = D3D_FEATURE_LEVEL_11_1;
 	HWND							m_window = nullptr;
+	SIZE							m_windowSize{};
 	CComPtr<ID3D11Device>			m_device;
 	CComPtr<ID3D11Device1>			m_device1;
 	CComPtr<ID3D11DeviceContext>	m_deviceContext;

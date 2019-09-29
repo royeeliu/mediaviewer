@@ -5,7 +5,6 @@
 #include "UncompressedVideoDescriptor.h"
 #include "Diagnisis.h"
 #include "Common.h"
-#include <dxvahd.h>
 
 namespace mapi {
 
@@ -33,7 +32,6 @@ void VideoProcessor::Initialize(MediaDescriptor const& media, Error& err)
 	m_imageHeight = mediaDesc.m_avctx->height;
 
 	D3D11_VIDEO_PROCESSOR_CONTENT_DESC contentDesc{};
-	ZeroMemory(&contentDesc, sizeof(contentDesc));
 	contentDesc.InputFrameFormat = D3D11_VIDEO_FRAME_FORMAT_INTERLACED_TOP_FIELD_FIRST;
 	contentDesc.InputWidth = m_imageWidth;
 	contentDesc.InputHeight = m_imageHeight;
@@ -165,6 +163,7 @@ void VideoProcessor::Process(MediaFrame const& frame)
 	m_graphics.GetDeviceContext()->Unmap(m_srcTexture2D, 0);
 
 	// Get Backbuffer
+	m_graphics.UpdateSwapChain();
 	CComPtr<ID3D11Texture2D> swapChainBackBuffer;
 	hr = m_graphics.GetSwapChain()->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)& swapChainBackBuffer);
 	RETURN_VOID_IF(!CHECK_COM_RESULT("IDXGISwapChain::GetBuffer", hr, err));
@@ -189,8 +188,12 @@ void VideoProcessor::Process(MediaFrame const& frame)
 	hr = m_videoDevice->CreateVideoProcessorInputView(m_srcTexture2D, m_videoProcessorEnumerator, &inputLeftViewDesc, &leftInputView);
 	RETURN_VOID_IF(!CHECK_COM_RESULT("ID3D11VideoDevice::CreateVideoProcessorInputView", hr, err));
 
+	D3D11_TEXTURE2D_DESC backBufferDesc{};
+	swapChainBackBuffer->GetDesc(&backBufferDesc);
+
 	RECT sourceRect{ 0, 0, static_cast<long>(m_imageWidth), static_cast<long>(m_imageHeight) };
-	SetVideoContextParameters(sourceRect, sourceRect);
+	RECT targetRect = GetTargetRect(m_imageWidth, m_imageHeight, backBufferDesc.Width, backBufferDesc.Height);
+	SetVideoContextParameters(sourceRect, targetRect);
 
 	D3D11_VIDEO_PROCESSOR_STREAM streamData{};
 	streamData.Enable = TRUE;
@@ -208,8 +211,6 @@ void VideoProcessor::Process(MediaFrame const& frame)
 	RETURN_VOID_IF(!CHECK_COM_RESULT("ID3D11VideoContext::VideoProcessorBlt", hr, err));
 
 	m_graphics.GetSwapChain()->Present(0, 0);
-
-
 }
 
 void VideoProcessor::SetVideoContextParameters(RECT const& sourceRect, RECT const& targetRect)
@@ -236,9 +237,9 @@ void VideoProcessor::SetVideoContextParameters(RECT const& sourceRect, RECT cons
 	m_videoContext->VideoProcessorSetStreamSourceRect(m_videoProcessor, 0, TRUE, &sourceRect);
 
 	// Stream dest rect
-	//m_videoContext->VideoProcessorSetStreamDestRect(m_videoProcessor, 0, TRUE, &sourceRect);
+	m_videoContext->VideoProcessorSetStreamDestRect(m_videoProcessor, 0, TRUE, &targetRect);
 
-	//m_videoContext->VideoProcessorSetOutputTargetRect(m_videoProcessor, TRUE, &targetRect);
+	m_videoContext->VideoProcessorSetOutputTargetRect(m_videoProcessor, TRUE, &targetRect);
 
 	// Stream color space
 	D3D11_VIDEO_PROCESSOR_COLOR_SPACE colorSpace = {};
@@ -256,6 +257,26 @@ void VideoProcessor::SetVideoContextParameters(RECT const& sourceRect, RECT cons
 	backgroundColor.RGBA.B = 1.0F * static_cast<float>(GetBValue(0)) / 255.0F;
 
 	m_videoContext->VideoProcessorSetOutputBackgroundColor(m_videoProcessor, FALSE, &backgroundColor);
+}
+
+RECT VideoProcessor::GetTargetRect(int imageWidth, int imageHeight, int displayWidth, int displayHeight)
+{
+	if ((int64_t)imageWidth * displayHeight > (int64_t)displayWidth* imageHeight)
+	{
+		int targetWidth = displayWidth;
+		int targetHeight = (int32_t)((int64_t)displayWidth * imageHeight / imageWidth);
+		int top = (displayHeight - targetHeight) / 2;
+		int bottom = top + targetHeight;
+		return RECT{ 0, top, targetWidth, bottom };
+	}
+	else
+	{
+		int targetHeight = displayHeight;
+		int targetWidth = (int32_t)((int64_t)displayHeight * imageWidth / imageHeight);
+		int left = (displayWidth - targetWidth) / 2;
+		int right = left + targetWidth;
+		return RECT{ left, 0, right, targetHeight };
+	}
 }
 
 

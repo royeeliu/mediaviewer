@@ -128,9 +128,6 @@ void VideoViewer::DecodeThread::ProcessInput(MediaObject* obj)
 
 void VideoViewer::DecodeThread::ProcessPacket(MediaPacketObject* packet)
 {
-	m_packetCount++;
-	PRINTF("\rpackets: %d", m_packetCount);
-
 	if (!m_decoder)
 	{
 		return;

@@ -120,6 +120,27 @@ void VideoViewer::RenderThread::ProcessInput(MediaObject* obj)
 
 void VideoViewer::RenderThread::ProcessFrame(MediaFrameObject* frame)
 {
+	m_frameCount++;
+	m_frameTimePoints.push_back(clock::now());
+
+	if (m_frameCount == 1)
+	{
+		m_startTimePoint = clock::now();
+	}
+
+	while (m_frameTimePoints.size() > m_maxTimePointsCount)
+	{
+		m_frameTimePoints.pop_front();
+	}
+
+	int fps = CalculateFrameRate();
+	auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(clock::now() - m_startTimePoint);
+
+	PRINTF("\rframe count: %d, duration: %.3f s, frame rate: %d fps",
+		static_cast<int32_t>(m_frameCount),
+		static_cast<double>(duration.count() / 1000.0f),
+		static_cast<int32_t>(fps));
+
 	MAPI_VideoRenderer_SendFrame(m_videoRenderer.get(), frame->frame.get());
 }
 
@@ -151,6 +172,8 @@ void VideoViewer::RenderThread::ProcessMediaDescriptor(MediaDescriptorObject* de
 void VideoViewer::RenderThread::OnSessionStart()
 {
 	PRINTF(".... Segment start\n");
+	m_frameCount = 0;
+	m_frameTimePoints.clear();
 	SetStatus(Status::Starting);
 }
 
@@ -186,4 +209,15 @@ void VideoViewer::RenderThread::ResetRenderer(MAPI_MediaDescriptor* mediaDesc)
 void VideoViewer::RenderThread::Repaint()
 {
 	MAPI_VideoRenderer_Repaint(m_videoRenderer.get());
+}
+
+int VideoViewer::RenderThread::CalculateFrameRate()
+{
+	if (m_frameTimePoints.size() < 2)
+	{
+		return 0;
+	}
+
+	auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(m_frameTimePoints.back() - m_frameTimePoints.front());
+	return (int)((int64_t)m_frameTimePoints.size() * 1000 / duration.count());
 }

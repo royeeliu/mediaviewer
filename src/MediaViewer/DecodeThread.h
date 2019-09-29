@@ -43,6 +43,5 @@ private:
 	ObjectQueue::ReceivingEnd				m_packetReceiver;
 	MediaObjectList							m_framesToSend;
 	Status									m_status = Status::Idl;
-	uint32_t								m_packetCount = 0;
 	std::shared_ptr<MAPI_Decoder>			m_decoder;
 };

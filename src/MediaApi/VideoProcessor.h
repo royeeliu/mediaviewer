@@ -19,6 +19,7 @@ public:
 
 private:
 	void SetVideoContextParameters(RECT const& sourceRect, RECT const& targetRect);
+	RECT GetTargetRect(int imageWidth, int imageHeight, int displayWidth, int displayHeight);
 
 private:
 	DX11Graphics&							m_graphics;

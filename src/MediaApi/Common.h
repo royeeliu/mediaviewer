@@ -5,6 +5,15 @@
 
 namespace mapi {
 
+inline bool operator==(SIZE const& l, SIZE const& r)
+{
+	return l.cx == r.cx && l.cy == r.cy;
+}
+
+inline bool operator!=(SIZE const& l, SIZE const& r)
+{
+	return l.cx != r.cx || l.cy != r.cy;
+}
 
 } // End of namespace mapi
 

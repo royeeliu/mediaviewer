@@ -41,9 +41,6 @@ void Graphics::Initialize(std::unique_ptr<TargetView>&& target_view, Error& err)
 		m_graphics->Initialize(m_view->GetHwnd(), err);
 		BREAK_IF(err.code != MAPI_NO_ERROR);
 
-		auto renderTarget = std::make_unique<DX11RenderTarget>(*m_graphics);
-		m_renderTarget = std::make_unique<RenderTarget>(std::move(renderTarget));
-
 	} while (0);
 
 	if (err.code != MAPI_NO_ERROR)

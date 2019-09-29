@@ -41,6 +41,20 @@ void DX11Graphics::Initialize(HWND hwnd, Error& err)
 	}
 }
 
+void DX11Graphics::UpdateSwapChain()
+{
+	RECT clientRect{};
+	::GetClientRect(m_window, &clientRect);
+	SIZE clientSize{ clientRect.right, clientRect.bottom };
+
+	if (clientSize != m_windowSize)
+	{
+		m_windowSize = clientSize;
+		HRESULT hr = m_swapChain->ResizeBuffers(2, m_windowSize.cx, m_windowSize.cy, DXGI_FORMAT_B8G8R8A8_UNORM, 0);
+		ASSERT(SUCCEEDED(hr));
+	}
+}
+
 void DX11Graphics::CreateDeviceResouces(Error& err)
 {
 	UINT createDeviceFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
@@ -133,7 +147,7 @@ void DX11Graphics::CreateSwapChain(Error& err)
 
 	// Obtain DXGI factory from device (since we used nullptr for pAdapter above)
 	CComQIPtr<IDXGIDevice> dxgiDevice(m_device);
-	
+
 	CComPtr<IDXGIAdapter> adapter;
 	HRESULT hr = dxgiDevice->GetAdapter(&adapter);
 	RETURN_VOID_IF(!CHECK_COM_RESULT("IDXGIDevice::GetAdapter", hr, err));
@@ -145,13 +159,13 @@ void DX11Graphics::CreateSwapChain(Error& err)
 	// Create swap chain
 	// DirectX 11.0 systems
 	DXGI_SWAP_CHAIN_DESC sd{};
-	sd.BufferCount = 1;
+	sd.BufferCount = 2;
 	sd.BufferDesc.Width = width;
 	sd.BufferDesc.Height = height;
 	sd.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
 	sd.BufferDesc.RefreshRate.Numerator = 60;
 	sd.BufferDesc.RefreshRate.Denominator = 1;
-	sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+	sd.BufferUsage = DXGI_USAGE_BACK_BUFFER | DXGI_USAGE_RENDER_TARGET_OUTPUT;
 	sd.OutputWindow = m_window;
 	sd.SampleDesc.Count = 1;
 	sd.SampleDesc.Quality = 0;
@@ -163,6 +177,7 @@ void DX11Graphics::CreateSwapChain(Error& err)
 	// Note this tutorial doesn't handle full-screen swapchains so we block the ALT+ENTER shortcut
 	dxgiFactory->MakeWindowAssociation(m_window, DXGI_MWA_NO_ALT_ENTER);
 
+#if 0
 	// Create a render target view
 	CComPtr<ID3D11Texture2D> backBuffer;
 	hr = m_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&backBuffer));
@@ -172,6 +187,7 @@ void DX11Graphics::CreateSwapChain(Error& err)
 	RETURN_VOID_IF(!CHECK_COM_RESULT("ID3D11Device::CreateRenderTargetView", hr, err));
 
 	m_deviceContext->OMSetRenderTargets(1, &(m_renderTargetView.p), nullptr);
+#endif
 
 	// Setup the viewport
 	D3D11_VIEWPORT vp{};
@@ -182,6 +198,8 @@ void DX11Graphics::CreateSwapChain(Error& err)
 	vp.TopLeftX = 0;
 	vp.TopLeftY = 0;
 	m_deviceContext->RSSetViewports(1, &vp);
+
+	m_windowSize = SIZE{ width, height };
 }
 
 void DX11Graphics::DiscardDeviceResources()
