@@ -133,13 +133,15 @@ void VideoViewer::RenderThread::ProcessFrame(MediaFrameObject* frame)
 		m_frameTimePoints.pop_front();
 	}
 
-	int fps = CalculateFrameRate();
+	int frameRate = CalculateFrameRate();
 	auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(clock::now() - m_startTimePoint);
+	int averageFrameRate = duration.count() > 0 ? (int32_t)((int64_t)(m_frameCount - 1) * 1000 / duration.count()) : 0;
 
-	PRINTF("\rframe count: %d, duration: %.3f s, frame rate: %d fps",
+	PRINTF("\rframe count: %d, duration: %.3f s, frame rate: %d fps, average frame rate: %d fps   ",
 		static_cast<int32_t>(m_frameCount),
 		static_cast<double>(duration.count() / 1000.0f),
-		static_cast<int32_t>(fps));
+		static_cast<int32_t>(frameRate),
+		static_cast<int32_t>(averageFrameRate));
 
 	MAPI_VideoRenderer_SendFrame(m_videoRenderer.get(), frame->frame.get());
 }
@@ -219,5 +221,5 @@ int VideoViewer::RenderThread::CalculateFrameRate()
 	}
 
 	auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(m_frameTimePoints.back() - m_frameTimePoints.front());
-	return (int)((int64_t)m_frameTimePoints.size() * 1000 / duration.count());
+	return (int)((int64_t)(m_frameTimePoints.size() - 1) * 1000 / duration.count());
 }
