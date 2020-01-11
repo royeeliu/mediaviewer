@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -155,6 +155,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Details\DiagImpl.h" />
+    <ClInclude Include="Details\ErrorImpl.h" />
+    <ClInclude Include="Details\ResultImpl.h" />
+    <ClInclude Include="Details\TaskImpl.h" />
+    <ClInclude Include="Error.h" />
+    <ClInclude Include="Result.h" />
+    <ClInclude Include="Diagnisis.h" />
+    <ClInclude Include="ResultStatus.h" />
+    <ClInclude Include="Task.h" />
     <ClInclude Include="Threading.Channels.AsyncChannel.h" />
     <ClInclude Include="Threading.Channels.h" />
     <ClInclude Include="libleo.h" />

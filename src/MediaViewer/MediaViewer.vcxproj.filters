@@ -54,12 +54,6 @@
     <ClInclude Include="DecodeThread.h">
       <Filter>VideoViewer</Filter>
     </ClInclude>
-    <ClInclude Include="MediaApiHelper.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="StringHelper.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainFrame.cpp">

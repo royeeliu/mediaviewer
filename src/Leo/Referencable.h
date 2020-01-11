@@ -1,5 +1,6 @@
-#pragma once
+﻿#pragma once
 
+#include "Diagnisis.h"
 #include <atomic>
 
 namespace Leo {
@@ -17,14 +18,14 @@ public:
 	virtual int Reference() noexcept final
 	{
 		int ref = ++m_ref;
-		_ASSERTE(ref > 1);
+		LEO_ENSURE(ref > 1);
 		return ref;
 	}
 
 	virtual int Release() noexcept final
 	{
 		int ref = --m_ref;
-		_ASSERTE(ref >= 0);
+		LEO_ENSURE(ref >= 0);
 
 		if (ref == 0)
 		{
@@ -60,7 +61,7 @@ template<class T>
 void SafeRelease(T*& ptr) noexcept
 {
 	static_assert(std::is_base_of<Referencable, T>::value, "invalid type");
-	
+
 	if (ptr)
 	{
 		T* ptr_ = ptr;
@@ -151,7 +152,7 @@ public:
 		return m_ptr;
 	}
 
-	T** GetAddress() 
+	T** GetAddress()
 	{
 		_ASSERTE(m_ptr == nullptr);
 		return &m_ptr;
@@ -183,13 +184,13 @@ private:
 
 	void _Assign(T* ptr)
 	{
-		_ASSERTE(m_ptr == nullptr);
+		LEO_REQUIRE(m_ptr == nullptr);
 		m_ptr = AddReference(ptr);
 	}
 
 	void _Move(T*& ptr)
 	{
-		_ASSERTE(m_ptr == nullptr);
+		LEO_REQUIRE(m_ptr == nullptr);
 		m_ptr = ptr;
 		ptr = nullptr;
 	}

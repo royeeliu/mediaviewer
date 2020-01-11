@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="头文件\Details">
+      <UniqueIdentifier>{5aad2abe-2ea5-4f6e-b53b-452e31dc100e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Referencable.h">
@@ -34,6 +37,30 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Threading.Channels.ObjectQueue.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Task.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Diagnostics.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Result.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Error.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Details\ResultImpl.h">
+      <Filter>头文件\Details</Filter>
+    </ClInclude>
+    <ClInclude Include="Details\TaskImpl.h">
+      <Filter>头文件\Details</Filter>
+    </ClInclude>
+    <ClInclude Include="Details\ErrorImpl.h">
+      <Filter>头文件\Details</Filter>
+    </ClInclude>
+    <ClInclude Include="ResultStatus.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
