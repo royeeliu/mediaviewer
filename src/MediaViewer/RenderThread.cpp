@@ -1,4 +1,4 @@
-#include "framework.h"
+﻿#include "framework.h"
 #include "RenderThread.h"
 #include "Common.h"
 #include "Include/MediaApiHelper.h"
@@ -199,7 +199,7 @@ void VideoViewer::RenderThread::ResetRenderer(MAPI_MediaDescriptor* mediaDesc)
 
 	if (err.code != MAPI_NO_ERROR)
 	{
-		SHOW_ERROR_MESSAGE(L"MAPI_VideoRenderer_Initialize failed: %s", FormatError(err));
+		SHOW_ERROR_MESSAGE(L"MAPI_VideoRenderer_Initialize failed: %s", FormatError(err).c_str());
 		return;
 	}
 

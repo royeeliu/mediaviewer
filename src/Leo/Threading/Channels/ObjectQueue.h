@@ -1,6 +1,6 @@
-#pragma once
+﻿#pragma once
 
-#include "Referencable.h"
+#include "../../Referencable.h"
 #include <chrono>
 
 namespace Leo { namespace Threading { namespace Channels {
@@ -188,6 +188,3 @@ private:
 } // namespace Channels
 } // namespace Threading
 } // namespace Leo
-
-
-

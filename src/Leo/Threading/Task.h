@@ -1,20 +1,19 @@
 ﻿#pragma once
 
-#include "Result.h"
+#include "../Result.h"
 #include "Details/TaskImpl.h"
 
 namespace Leo {
+namespace Threading {
 
 template<typename T>
 class Task;
-template<>
-class Task<void>;
 
 template<typename ReturnTypeT>
 class Task {
 public:
 	using ReturnType = ReturnTypeT;
-	using AsyncResult = AsyncResult<ResultType>;
+	using ResultType = Result<ReturnType>;
 
 public:
 	Task() noexcept
@@ -46,9 +45,9 @@ public:
 		return m_impl != nullptr;
 	}
 
-	AsyncResult Wait()
+	ResultType Wait()
 	{
-		return AsyncResult{};
+		return ResultType{};
 	}
 
 private:
@@ -70,4 +69,5 @@ private:
 	TaskImpl* m_impl = nullptr;
 };
 
+} // end of namespace Threading
 } // end of namespace Leo

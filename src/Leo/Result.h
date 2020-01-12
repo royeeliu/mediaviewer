@@ -136,8 +136,8 @@ public:
 
 	ValueType Get() const noexcept
 	{
-		LEO_REQUIRE(Succeeded());
-		return dynamic_cast<Details::SuccessedResult<ValueType>*>(m_impl)->value_;
+		LEO_REQUIRE(Base::Succeeded());
+		return dynamic_cast<Details::SuccessedResult<ValueType>*>(Base::m_impl)->value_;
 	}
 };
 

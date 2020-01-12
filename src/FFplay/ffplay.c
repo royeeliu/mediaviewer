@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright (c) 2003 Fabrice Bellard
  *
  * This file is part of FFmpeg.
@@ -22,6 +22,10 @@
  * @file
  * simple media player based on the FFmpeg libraries
  */
+
+#pragma warning(disable:4090) // warning C4090: “函数”: 不同的“const”限定符
+#pragma warning(disable:4244) // warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+#pragma warning(disable:4018) // warning C4018: “>=”: 有符号/无符号不匹配
 
 #include "config.h"
 #include <inttypes.h>

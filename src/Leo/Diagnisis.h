@@ -10,6 +10,10 @@ inline
 __declspec(noreturn)
 void OnFatalError(const char* message, const char* file, int line, const char* func)
 {
+	(message);
+	(file);
+	(line);
+	(func);
 #ifndef NDEBUG
 	_CrtDbgBreak();
 #endif // DEBUG
@@ -29,7 +33,7 @@ void OnFatalError(const char* message, const char* file, int line, const char* f
 
 #ifndef _LEO_ASSERT
 #ifdef NDEBUG
-#	define _LEO_ASSERT(exp)	(exp)
+#	define _LEO_ASSERT(exp)	do { if (exp){} } while(0)
 #else
 #	define _LEO_ASSERT(exp)	assert(exp)
 #endif // NDEBUG

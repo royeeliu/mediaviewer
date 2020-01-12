@@ -1,4 +1,4 @@
-#include "framework.h"
+﻿#include "framework.h"
 #include "DecodeThread.h"
 #include "Common.h"
 #include "Dispatcher.h"
@@ -138,7 +138,7 @@ void VideoViewer::DecodeThread::ProcessPacket(MediaPacketObject* packet)
 
 	if (err.code != MAPI_NO_ERROR)
 	{
-		SHOW_ERROR_MESSAGE(L"MAPI_Decoder_SendPacket failed: %s", FormatError(err));
+		SHOW_ERROR_MESSAGE(L"MAPI_Decoder_SendPacket failed: %s", FormatError(err).c_str());
 		return;
 	}
 
@@ -148,7 +148,7 @@ void VideoViewer::DecodeThread::ProcessPacket(MediaPacketObject* packet)
 
 	if (err.code != MAPI_NO_ERROR)
 	{
-		SHOW_ERROR_MESSAGE(L"MAPI_Decoder_ReceiveFrame failed: %s", FormatError(err));
+		SHOW_ERROR_MESSAGE(L"MAPI_Decoder_ReceiveFrame failed: %s", FormatError(err).c_str());
 		return;
 	}
 
@@ -215,7 +215,7 @@ void VideoViewer::DecodeThread::CreateDecoder(MAPI_MediaDescriptor* mediaDesc)
 
 	if (err.code != MAPI_NO_ERROR)
 	{
-		SHOW_ERROR_MESSAGE(L"MAPI_Decoder_Initialize failed: %s", FormatError(err));
+		SHOW_ERROR_MESSAGE(L"MAPI_Decoder_Initialize failed: %s", FormatError(err).c_str());
 		return;
 	}
 

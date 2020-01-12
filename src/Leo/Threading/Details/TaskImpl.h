@@ -1,8 +1,7 @@
 ﻿#pragma once
 
-#include "ResultImpl.h"
-
 namespace Leo {
+namespace Threading {
 namespace Details {
 
 template<typename T>
@@ -21,4 +20,5 @@ class TaskImpl<void> : public Referencable
 };
 
 } // end of namespace Details
+} // end of namespace Threading
 } // end of namespace Leo

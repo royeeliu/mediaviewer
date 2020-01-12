@@ -1,4 +1,4 @@
-#include "framework.h"
+﻿#include "framework.h"
 #include "Application.h"
 #include "MainFrame.h"
 #include "VideoViewer.h"
@@ -24,7 +24,7 @@ void Application::Initialize(HINSTANCE hinst)
 	m_hinstance = hinst;
 
 	HRESULT hr = g_comModule.Init(nullptr, hinst);
-	ATLASSERT(SUCCEEDED(hr));
+	ASSERT(SUCCEEDED(hr));
 
 	::AllocConsole();
 	m_hwndConsole = ::GetConsoleWindow();
@@ -49,7 +49,7 @@ void Application::Initialize(HINSTANCE hinst)
 
 	m_mainFrame = std::make_unique<MainFrame>();
 	HWND hwndMainFrame = m_mainFrame->Create(nullptr, &MainFrame::rcDefault, szTitle, 0, 0, hMenu);
-	ATLASSERT(hwndMainFrame != nullptr);
+	ASSERT(hwndMainFrame != nullptr);
 
 	m_mainFrame->SetIcon(hIcon);
 	m_mainFrame->SetIcon(hIconSmall, FALSE);
@@ -73,18 +73,23 @@ void Application::Run(int show)
 	MSG msg{};
 
 	// 主消息循环:
-	while (true)
+	while (msg.message != WM_QUIT)
 	{
-		DWORD waitResult = ::MsgWaitForMultipleObjectsEx(0, 
-			nullptr, 
-			INFINITE, 
-			QS_ALLEVENTS, 
+		DWORD waitResult = ::MsgWaitForMultipleObjectsEx(0,
+			nullptr,
+			INFINITE,
+			QS_ALLEVENTS,
 			MWMO_ALERTABLE | MWMO_INPUTAVAILABLE);
 
 		if (waitResult != WAIT_IO_COMPLETION)
 		{
 			while (::PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
 			{
+				if (msg.message == WM_QUIT)
+				{
+					break;
+				}
+
 				if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
 				{
 					TranslateMessage(&msg);
@@ -104,7 +109,7 @@ void Application::ShowErrorMessage(const wchar_t* format, ...)
 
 	va_list args;
 	va_start(args, format);
-	int count = vswprintf_s(buffer, _countof(buffer), format, args);
+	vswprintf_s(buffer, _countof(buffer), format, args);
 	va_end(args);
 
 	WPRINTF(L"\nERROR MESSAGE:\n%s\n", buffer);
@@ -116,7 +121,7 @@ void Application::ShowErrorMessage(const char* format, ...)
 
 	va_list args;
 	va_start(args, format);
-	int count = vsprintf_s(buffer, _countof(buffer), format, args);
+	vsprintf_s(buffer, _countof(buffer), format, args);
 	va_end(args);
 
 	PRINTF("\nERROR MESSAGE:\n%s\n", buffer);

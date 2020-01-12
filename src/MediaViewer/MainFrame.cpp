@@ -1,4 +1,4 @@
-#include "framework.h"
+﻿#include "framework.h"
 #include "MainFrame.h"
 #include "Application.h"
 #include "Common.h"
@@ -31,7 +31,7 @@ LRESULT MainFrame::OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHand
 
 	m_clientView = std::make_unique<ClientView>();
 	HWND hwndView = m_clientView->Create(m_hWnd, &ClientView::rcDefault, L"VideoView");
-	ATLASSERT(hwndView != nullptr);
+	ASSERT(hwndView != nullptr);
 
 	UpdataLayout();
 
@@ -89,9 +89,9 @@ LRESULT MainFrame::OnExit(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandl
 
 LRESULT MainFrame::OnAbout(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-	::DialogBox(Application::Current.GetInstance(), 
-		MAKEINTRESOURCE(IDD_ABOUTBOX), 
-		m_hWnd, 
+	::DialogBox(Application::Current.GetInstance(),
+		MAKEINTRESOURCE(IDD_ABOUTBOX),
+		m_hWnd,
 		&MainFrame::About);
 	return 0;
 }
@@ -102,9 +102,9 @@ LRESULT MainFrame::OnLoadVideo(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& b
 	DWORD flags = OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT;
 
 	CFileDialog fileDlg(
-		TRUE, 
-		nullptr, 
-		nullptr, 
+		TRUE,
+		nullptr,
+		nullptr,
 		flags,
 		filter,
 		m_hWnd);
@@ -161,6 +161,3 @@ void MainFrame::UpdataLayout()
 		m_clientView->SetWindowPos(nullptr, &clientRect, SWP_NOZORDER | SWP_NOACTIVATE);
 	}
 }
-
-
-

@@ -17,7 +17,7 @@
 #include <memory.h>
 #include <tchar.h>
 
-// C++ 
+// C++
 #include <memory>
 #include <functional>
 #include <vector>
@@ -37,3 +37,5 @@
 
 // Leo
 #include "Leo/libleo.h"
+
+#pragma warning(disable:4100) // warning C4100: 未引用的形参

@@ -1,4 +1,4 @@
-#include "Threading.Channels.ObjectQueue.h"
+﻿#include "ObjectQueue.h"
 #include <list>
 #include <mutex>
 #include <condition_variable>
@@ -21,7 +21,7 @@ struct ObjectQueue::Impl : Referencable
 public:
 	void Resize(int size)
 	{
-		_ASSERTE(size > 0);
+		LEO_ASSERT(size > 0);
 		maxSize_ = size;
 	}
 
@@ -258,12 +258,12 @@ ObjectQueue::Status ObjectQueue::SendingEnd::Send(Referencable* obj, int& code)
 	unique_lock lock(m_impl->mutex_);
 
 	Status result = m_impl->WaitPush(lock, code);
-	_ASSERTE(result != Status::Timeout);
+	LEO_ASSERT(result != Status::Timeout);
 
 	if (result == Status::Ok)
 	{
 		bool br = m_impl->TryPush(obj);
-		_ASSERTE(br);
+		LEO_ASSERT(br);
 	}
 
 	return result;
@@ -278,7 +278,7 @@ ObjectQueue::Status ObjectQueue::SendingEnd::SendFor(Referencable* obj, std::chr
 	if (result == Status::Ok)
 	{
 		bool br = m_impl->TryPush(obj);
-		_ASSERTE(br);
+		LEO_ASSERT(br);
 	}
 
 	return result;
@@ -297,7 +297,7 @@ ObjectQueue::ReceivingEnd::ReceivingEnd(ObjectQueue& queue)
 
 bool ObjectQueue::ReceivingEnd::TryReceive(Referencable*& obj)
 {
-	_ASSERTE(obj == nullptr);
+	LEO_ASSERT(obj == nullptr);
 	unique_lock lock(m_impl->mutex_);
 	return m_impl->TryPop(obj);
 }
@@ -319,27 +319,27 @@ ObjectQueue::Status ObjectQueue::ReceivingEnd::Receive(Referencable*& obj, int& 
 	unique_lock lock(m_impl->mutex_);
 
 	Status result = m_impl->WaitPop(lock, code);
-	_ASSERTE(result != Status::Timeout);
+	LEO_ASSERT(result != Status::Timeout);
 
 	if (result == Status::Ok)
 	{
 		bool br = m_impl->TryPop(obj);
-		_ASSERTE(br);
+		LEO_ASSERT(br);
 	}
 
 	return result;
 }
 
 ObjectQueue::Status ObjectQueue::ReceivingEnd::ReceiveFor(Referencable*& obj, std::chrono::milliseconds timeout, int& code)
-{	
+{
 	unique_lock lock(m_impl->mutex_);
 
-	Status result = m_impl->WaitPop(lock, code);
+	Status result = m_impl->WaitPopFor(lock, timeout, code);
 
 	if (result == Status::Ok)
 	{
 		bool br = m_impl->TryPop(obj);
-		_ASSERTE(br);
+		LEO_ASSERT(br);
 	}
 
 	return result;

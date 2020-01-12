@@ -1,4 +1,4 @@
-#include "framework.h"
+﻿#include "framework.h"
 #include "ClientView.h"
 
 ClientView::ClientView()
@@ -24,6 +24,7 @@ LRESULT ClientView::OnPaint(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHand
 {
 	PAINTSTRUCT ps;
 	HDC	hdc = BeginPaint(&ps);
+	UNREFERENCED_PARAMETER(hdc);
 	PaintEvent();
 	EndPaint(&ps);
 

@@ -1,4 +1,4 @@
-#include "framework.h"
+﻿#include "framework.h"
 #include "SourceThread.h"
 #include "Common.h"
 #include "Dispatcher.h"
@@ -96,7 +96,7 @@ VideoViewer::ThreadLoopStatus VideoViewer::SourceThread::ProcessInterrupt(Interr
 		return ThreadLoopStatus::WaitCommand;
 	case InterruptCode::Shutdown:
 		return ThreadLoopStatus::Exit;
-	default: 
+	default:
 		ASSERT(!"Invalid code");
 		return ThreadLoopStatus::Continue;
 	}
@@ -139,8 +139,8 @@ void VideoViewer::SourceThread::LoadFile(std::wstring const& fileName)
 
 	if (err.code != MAPI_NO_ERROR)
 	{
-		SHOW_ERROR_MESSAGE(L"MAPI_MediaSource_LoadFile failed: %s, %s", 
-			FormatError(err).c_str(), 
+		SHOW_ERROR_MESSAGE(L"MAPI_MediaSource_LoadFile failed: %s, %s",
+			FormatError(err).c_str(),
 			fileName.c_str());
 		return;
 	}
@@ -196,13 +196,15 @@ void VideoViewer::SourceThread::ReadPacket()
 
 	int streamIndex = MAPI_MediaPacket_GetStreamIndex(packet.get());
 
-	if (streamIndex != m_videoStreamIndex)
+	if (streamIndex != (int)m_videoStreamIndex)
 	{
 		return;
 	}
 
 	int64_t pts = MAPI_MediaPacket_GetPts(packet.get());
 	int64_t dts = MAPI_MediaPacket_GetDts(packet.get());
+	UNREFERENCED_PARAMETER(pts);
+	UNREFERENCED_PARAMETER(dts);
 	//WPRINTF(L"\r[%u]pts: %lld, \tdts: %lld                                      ", m_videoPacketCount, pts, dts);
 	m_videoPacketCount++;
 
