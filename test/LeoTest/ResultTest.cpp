@@ -3,6 +3,30 @@
 
 using namespace Leo;
 
+TEST(ResultDeathTest, GetResultFromIntFailureResult)
+{
+	auto result = Result<int>::MakeFailureResult(1);
+	ASSERT_DEATH(result.Get(), "");
+}
+
+TEST(ResultDeathTest, GetResultFromVoidFailureResult)
+{
+	auto result = Result<void>::MakeFailureResult(1);
+	ASSERT_DEATH(result.Get(), "");
+}
+
+TEST(ResultDeathTest, GetResultFromIntCanceledResult)
+{
+	auto result = Result<int>::MakeCanceledResult();
+	ASSERT_DEATH(result.Get(), "");
+}
+
+TEST(ResultDeathTest, GetResultFromVoidCaneceledResult)
+{
+	auto result = Result<void>::MakeCanceledResult();
+	ASSERT_DEATH(result.Get(), "");
+}
+
 TEST(ResultTest, CreateVoidFailureResultWithErrorCode)
 {
 	auto result = Result<void>::MakeFailureResult(1);
