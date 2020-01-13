@@ -31,6 +31,9 @@
     <Filter Include="Leo\Tasks\Details">
       <UniqueIdentifier>{6ea47e60-7c70-4e0b-948a-d4c5ea92ec8f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Leo\Tasks\Details\Platform">
+      <UniqueIdentifier>{df76dfe8-b7df-42bf-b13d-a34fdcb32eb1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Referencable.h">
@@ -87,6 +90,15 @@
     <ClInclude Include="Tasks\Details\TaskImpl.h">
       <Filter>Leo\Tasks\Details</Filter>
     </ClInclude>
+    <ClInclude Include="Tasks\SchedulerInterface.h">
+      <Filter>Leo\Tasks</Filter>
+    </ClInclude>
+    <ClInclude Include="Tasks\Details\Platform\WinScheduler.h">
+      <Filter>Leo\Tasks\Details\Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="Tasks\Scheduler.h">
+      <Filter>Leo\Tasks</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lib.cpp">
@@ -94,6 +106,12 @@
     </ClCompile>
     <ClCompile Include="Threading\Channels\ObjectQueue.cpp">
       <Filter>Leo\Threading\Channels</Filter>
+    </ClCompile>
+    <ClCompile Include="Tasks\Details\Platform\WinScheduler.cpp">
+      <Filter>Leo\Tasks\Details\Platform</Filter>
+    </ClCompile>
+    <ClCompile Include="Tasks\Scheduler.cpp">
+      <Filter>Leo\Tasks</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

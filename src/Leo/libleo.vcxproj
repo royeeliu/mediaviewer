@@ -169,7 +169,10 @@
     <ClInclude Include="libleo.h" />
     <ClInclude Include="Referencable.h" />
     <ClInclude Include="Tasks.h" />
+    <ClInclude Include="Tasks\Details\Platform\WinScheduler.h" />
     <ClInclude Include="Tasks\Details\TaskImpl.h" />
+    <ClInclude Include="Tasks\Scheduler.h" />
+    <ClInclude Include="Tasks\SchedulerInterface.h" />
     <ClInclude Include="Tasks\Task.h" />
     <ClInclude Include="Threading.h" />
     <ClInclude Include="Threading\Channels\AsyncChannel.h" />
@@ -180,6 +183,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lib.cpp" />
+    <ClCompile Include="Tasks\Details\Platform\WinScheduler.cpp" />
+    <ClCompile Include="Tasks\Scheduler.cpp" />
     <ClCompile Include="Threading\Channels\ObjectQueue.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
