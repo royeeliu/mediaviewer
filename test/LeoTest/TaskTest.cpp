@@ -1,7 +1,7 @@
 ﻿#include "pch.h"
-#include "Leo/Threading/Task.h"
+#include "Leo/Tasks.h"
 
-using namespace Leo::Threading;
+using namespace Leo::Tasks;
 
 TEST(TaskTest, CreateEmptyTask)
 {

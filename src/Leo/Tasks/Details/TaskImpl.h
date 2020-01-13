@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 namespace Leo {
-namespace Threading {
+namespace Tasks {
 namespace Details {
 
 template<typename T>
@@ -20,5 +20,5 @@ class TaskImpl<void> : public Referencable
 };
 
 } // end of namespace Details
-} // end of namespace Threading
+} // end of namespace Tasks
 } // end of namespace Leo

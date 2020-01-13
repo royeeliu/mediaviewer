@@ -168,12 +168,14 @@
     <ClInclude Include="ResultStatus.h" />
     <ClInclude Include="libleo.h" />
     <ClInclude Include="Referencable.h" />
+    <ClInclude Include="Tasks.h" />
+    <ClInclude Include="Tasks\Details\TaskImpl.h" />
+    <ClInclude Include="Tasks\Task.h" />
     <ClInclude Include="Threading.h" />
     <ClInclude Include="Threading\Channels\AsyncChannel.h" />
     <ClInclude Include="Threading\Channels\ObjectQueue.h" />
     <ClInclude Include="Threading\Channels\SyncChannel.h" />
     <ClInclude Include="Threading\Details\TaskImpl.h" />
-    <ClInclude Include="Threading\Task.h" />
     <ClInclude Include="Threading\Channels.h" />
   </ItemGroup>
   <ItemGroup>

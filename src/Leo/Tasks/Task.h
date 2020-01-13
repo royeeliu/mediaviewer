@@ -4,7 +4,7 @@
 #include "Details/TaskImpl.h"
 
 namespace Leo {
-namespace Threading {
+namespace Tasks {
 
 template<typename T>
 class Task;
@@ -69,5 +69,5 @@ private:
 	TaskImpl* m_impl = nullptr;
 };
 
-} // end of namespace Threading
+} // end of namespace Tasks
 } // end of namespace Leo

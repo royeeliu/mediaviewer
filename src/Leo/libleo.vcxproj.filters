@@ -25,6 +25,12 @@
     <Filter Include="Leo\Threading\Details">
       <UniqueIdentifier>{27214cab-c712-4f3b-a48f-1e96486df5d3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Leo\Tasks">
+      <UniqueIdentifier>{39d90e06-be25-4a08-98d9-9175912c4b9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Leo\Tasks\Details">
+      <UniqueIdentifier>{6ea47e60-7c70-4e0b-948a-d4c5ea92ec8f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Referencable.h">
@@ -54,9 +60,6 @@
     <ClInclude Include="Diagnisis.h">
       <Filter>Leo</Filter>
     </ClInclude>
-    <ClInclude Include="Threading\Task.h">
-      <Filter>Leo\Threading</Filter>
-    </ClInclude>
     <ClInclude Include="Threading\Channels\AsyncChannel.h">
       <Filter>Leo\Threading\Channels</Filter>
     </ClInclude>
@@ -74,6 +77,15 @@
     </ClInclude>
     <ClInclude Include="Threading\Details\TaskImpl.h">
       <Filter>Leo\Threading\Details</Filter>
+    </ClInclude>
+    <ClInclude Include="Tasks.h">
+      <Filter>Leo</Filter>
+    </ClInclude>
+    <ClInclude Include="Tasks\Task.h">
+      <Filter>Leo\Tasks</Filter>
+    </ClInclude>
+    <ClInclude Include="Tasks\Details\TaskImpl.h">
+      <Filter>Leo\Tasks\Details</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
