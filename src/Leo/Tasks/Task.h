@@ -1,7 +1,8 @@
 ﻿#pragma once
 
-#include "../Result.h"
+#include "Scheduler.h"
 #include "Details/TaskImpl.h"
+#include "Details/TaskHandleImpl.h"
 
 namespace Leo {
 namespace Tasks {
@@ -14,10 +15,21 @@ class Task {
 public:
 	using ReturnType = ReturnTypeT;
 	using ResultType = Result<ReturnType>;
+	using TaskImplType = Details::TaskImpl<ReturnType>;
 
 public:
 	Task() noexcept
 	{
+	}
+
+	template<typename ParamType>
+	__declspec(noinline)
+	explicit
+	Task(ParamType param)
+	{
+		Details::ValidateTaskConstructorArgs<ReturnType, ParamType>(param);
+		m_impl = new TaskImplType{ GetDefaultScheduler() };
+		m_impl->ScheduleTask(new Details::TaskHandleImpl<ReturnType, ParamType>{ AddReference(m_impl), std::move(param) });
 	}
 
 	~Task()
@@ -47,18 +59,17 @@ public:
 
 	ResultType Wait()
 	{
-		return ResultType{};
+		m_impl->Wait();
+		return m_impl->GetResult();
 	}
 
 private:
-	using TaskImpl = Details::TaskImpl<ReturnType>;
-
 	void _Clear() noexcept
 	{
 		SafeRelease(m_impl);
 	}
 
-	void _Move(TaskImpl*& impl) noexcept
+	void _Move(TaskImplType*& impl) noexcept
 	{
 		LEO_REQUIRE(m_impl == nullptr);
 		m_impl = impl;
@@ -66,7 +77,7 @@ private:
 	}
 
 private:
-	TaskImpl* m_impl = nullptr;
+	TaskImplType* m_impl = nullptr;
 };
 
 } // end of namespace Tasks

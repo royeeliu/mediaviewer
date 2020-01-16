@@ -99,6 +99,12 @@
     <ClInclude Include="Tasks\Scheduler.h">
       <Filter>Leo\Tasks</Filter>
     </ClInclude>
+    <ClInclude Include="Tasks\Details\TaskHandle.h">
+      <Filter>Leo\Tasks\Details</Filter>
+    </ClInclude>
+    <ClInclude Include="Tasks\Details\TaskHandleImpl.h">
+      <Filter>Leo\Tasks\Details</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lib.cpp">
