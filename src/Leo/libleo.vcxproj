@@ -112,6 +112,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -130,6 +131,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -169,10 +171,12 @@
     <ClInclude Include="libleo.h" />
     <ClInclude Include="Referencable.h" />
     <ClInclude Include="Tasks.h" />
-    <ClInclude Include="Tasks\Details\TaskHandleImpl.h" />
+    <ClInclude Include="Tasks\Details\ContinuationTaskHandle.h" />
+    <ClInclude Include="Tasks\Details\InitialTaskHandle.h" />
     <ClInclude Include="Tasks\Details\Platform\WinScheduler.h" />
     <ClInclude Include="Tasks\Details\TaskHandle.h" />
     <ClInclude Include="Tasks\Details\TaskImpl.h" />
+    <ClInclude Include="Tasks\Predefine.h" />
     <ClInclude Include="Tasks\Scheduler.h" />
     <ClInclude Include="Tasks\SchedulerInterface.h" />
     <ClInclude Include="Tasks\Task.h" />

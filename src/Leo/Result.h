@@ -52,11 +52,6 @@ protected:
 	}
 
 public:
-	operator bool() const noexcept
-	{
-		return Succeeded();
-	}
-
 	bool Succeeded() const noexcept
 	{
 		return Status() == ResultStatus::Succeeded;

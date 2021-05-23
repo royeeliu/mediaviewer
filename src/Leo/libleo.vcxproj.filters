@@ -102,7 +102,13 @@
     <ClInclude Include="Tasks\Details\TaskHandle.h">
       <Filter>Leo\Tasks\Details</Filter>
     </ClInclude>
-    <ClInclude Include="Tasks\Details\TaskHandleImpl.h">
+    <ClInclude Include="Tasks\Predefine.h">
+      <Filter>Leo\Tasks</Filter>
+    </ClInclude>
+    <ClInclude Include="Tasks\Details\InitialTaskHandle.h">
+      <Filter>Leo\Tasks\Details</Filter>
+    </ClInclude>
+    <ClInclude Include="Tasks\Details\ContinuationTaskHandle.h">
       <Filter>Leo\Tasks\Details</Filter>
     </ClInclude>
   </ItemGroup>

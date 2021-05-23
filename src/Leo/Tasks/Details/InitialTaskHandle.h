@@ -7,17 +7,17 @@ namespace Tasks {
 namespace Details {
 
 template<typename ReturnType, typename Function>
-class TaskHandleImpl : public TaskHandle
+class InitialTaskHandle : public TaskHandle
 {
 	using TaskImpl = Details::TaskImpl<ReturnType>;
 public:
-	TaskHandleImpl(TaskImpl* task, Function func)
+	InitialTaskHandle(TaskImpl* task, Function func)
 		: m_task{ task }
 		, m_function{ std::move(func) }
 	{
 	}
 
-	~TaskHandleImpl()
+	~InitialTaskHandle()
 	{
 		SafeRelease(m_task);
 	}

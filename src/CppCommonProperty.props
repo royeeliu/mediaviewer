@@ -7,6 +7,10 @@
     <OutDir>$(SolutionDir)target\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)target\temp\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
-  <ItemDefinitionGroup />
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+  </ItemDefinitionGroup>
   <ItemGroup />
 </Project>

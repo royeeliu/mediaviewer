@@ -31,7 +31,6 @@ TEST(ResultTest, CreateVoidFailureResultWithErrorCode)
 {
 	auto result = Result<void>::MakeFailureResult(1);
 	EXPECT_EQ(result.Status(), ResultStatus::Failed);
-	EXPECT_FALSE(result);
 	EXPECT_FALSE(result.Succeeded());
 	EXPECT_TRUE(result.Failed());
 	EXPECT_FALSE(result.Canceled());
@@ -44,7 +43,6 @@ TEST(ResultTest, CreateIntFailureResultWithErrorCode)
 {
 	auto result = Result<int>::MakeFailureResult(1);
 	EXPECT_EQ(result.Status(), ResultStatus::Failed);
-	EXPECT_FALSE(result);
 	EXPECT_FALSE(result.Succeeded());
 	EXPECT_TRUE(result.Failed());
 	EXPECT_FALSE(result.Canceled());
@@ -59,7 +57,6 @@ TEST(ResultTest, CreateVoidFailureResultWithError)
 	auto result = Result<void>::MakeFailureResult(std::move(err));
 	EXPECT_EQ(result.Status(), ResultStatus::Failed);
 	EXPECT_EQ(err.Code(), 0);
-	EXPECT_FALSE(result);
 	EXPECT_FALSE(result.Succeeded());
 	EXPECT_TRUE(result.Failed());
 	EXPECT_FALSE(result.Canceled());
@@ -73,7 +70,6 @@ TEST(ResultTest, CreateIntFailureResultWithError)
 	auto err = Error{ 1 };
 	auto result = Result<int>::MakeFailureResult(std::move(err));
 	EXPECT_EQ(result.Status(), ResultStatus::Failed);
-	EXPECT_FALSE(result);
 	EXPECT_FALSE(result.Succeeded());
 	EXPECT_TRUE(result.Failed());
 	EXPECT_FALSE(result.Canceled());
@@ -86,7 +82,6 @@ TEST(ResultTest, CreateVoidCanceledResult)
 {
 	auto result = Result<void>::MakeCanceledResult();
 	EXPECT_EQ(result.Status(), ResultStatus::Canceled);
-	EXPECT_FALSE(result);
 	EXPECT_FALSE(result.Succeeded());
 	EXPECT_FALSE(result.Failed());
 	EXPECT_TRUE(result.Canceled());
@@ -99,7 +94,6 @@ TEST(ResultTest, CreateIntCanceledResult)
 {
 	auto result = Result<int>::MakeCanceledResult();
 	EXPECT_EQ(result.Status(), ResultStatus::Canceled);
-	EXPECT_FALSE(result);
 	EXPECT_FALSE(result.Succeeded());
 	EXPECT_FALSE(result.Failed());
 	EXPECT_TRUE(result.Canceled());
@@ -114,7 +108,6 @@ TEST(ResultTest, CreateVoidSucceededResult)
 	auto err = result.Error();
 	ASSERT_EQ(result.Status(), ResultStatus::Succeeded);
 	result.Get();
-	EXPECT_TRUE(result);
 	EXPECT_TRUE(result.Succeeded());
 	EXPECT_FALSE(result.Failed());
 	EXPECT_FALSE(result.Canceled());
@@ -127,7 +120,6 @@ TEST(ResultTest, CreateIntSucceededResult)
 	auto err = result.Error();
 	ASSERT_EQ(result.Status(), ResultStatus::Succeeded);
 	EXPECT_EQ(result.Get(), 100);
-	EXPECT_TRUE(result);
 	EXPECT_TRUE(result.Succeeded());
 	EXPECT_FALSE(result.Failed());
 	EXPECT_FALSE(result.Canceled());
@@ -141,7 +133,6 @@ TEST(ResultTest, CreateStringSucceededResult)
 	auto err = result.Error();
 	ASSERT_EQ(result.Status(), ResultStatus::Succeeded);
 	EXPECT_EQ(result.Get(), str);
-	EXPECT_TRUE(result);
 	EXPECT_TRUE(result.Succeeded());
 	EXPECT_FALSE(result.Failed());
 	EXPECT_FALSE(result.Canceled());

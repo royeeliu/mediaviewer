@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Various utilities for command line tools
  * Copyright (c) 2000-2003 Fabrice Bellard
  *
@@ -67,6 +67,7 @@
 #endif
 
 #pragma warning(disable:4996)
+#pragma warning(disable:4090)
 
 static int init_report(const char *env);
 
@@ -220,7 +221,7 @@ void show_help_children(const AVClass *class, int flags)
 static const OptionDef *find_option(const OptionDef *po, const char *name)
 {
     const char *p = strchr(name, ':');
-    int len = p ? p - name : strlen(name);
+    int len = p ? (int)(p - name) : (int)strlen(name);
 
     while (po->name) {
         if (!strncmp(name, po->name, len) && strlen(po->name) == len)
@@ -325,13 +326,13 @@ static int write_option(void *optctx, const OptionDef *po, const char *opt,
             return AVERROR(ENOMEM);
         *(char **)dst = str;
     } else if (po->flags & OPT_BOOL || po->flags & OPT_INT) {
-        *(int *)dst = parse_number_or_die(opt, arg, OPT_INT64, INT_MIN, INT_MAX);
+        *(int *)dst = (int)parse_number_or_die(opt, arg, OPT_INT64, INT_MIN, INT_MAX);
     } else if (po->flags & OPT_INT64) {
-        *(int64_t *)dst = parse_number_or_die(opt, arg, OPT_INT64, INT64_MIN, INT64_MAX);
+        *(int64_t *)dst = (int64_t)parse_number_or_die(opt, arg, OPT_INT64, (double)INT64_MIN, (double)INT64_MAX);
     } else if (po->flags & OPT_TIME) {
         *(int64_t *)dst = parse_time_or_die(opt, arg, 1);
     } else if (po->flags & OPT_FLOAT) {
-        *(float *)dst = parse_number_or_die(opt, arg, OPT_FLOAT, -INFINITY, INFINITY);
+        *(float *)dst = (float)parse_number_or_die(opt, arg, OPT_FLOAT, -INFINITY, INFINITY);
     } else if (po->flags & OPT_DOUBLE) {
         *(double *)dst = parse_number_or_die(opt, arg, OPT_DOUBLE, -INFINITY, INFINITY);
     } else if (po->u.func_arg) {
@@ -2149,7 +2150,7 @@ AVDictionary **setup_find_stream_info_opts(AVFormatContext *s,
                "Could not alloc memory for stream options.\n");
         return NULL;
     }
-    for (i = 0; i < s->nb_streams; i++)
+    for (i = 0; i < (int)s->nb_streams; i++)
         opts[i] = filter_codec_opts(codec_opts, s->streams[i]->codecpar->codec_id,
                                     s, s->streams[i], NULL);
     return opts;

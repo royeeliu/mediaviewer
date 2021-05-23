@@ -1,19 +1,16 @@
 ﻿#pragma once
 
+#include "Predefine.h"
 #include "Scheduler.h"
 #include "Details/TaskImpl.h"
-#include "Details/TaskHandleImpl.h"
+#include "Details/InitialTaskHandle.h"
 
 namespace Leo {
 namespace Tasks {
 
-template<typename T>
-class Task;
-
-template<typename ReturnTypeT>
-class Task {
-public:
-	using ReturnType = ReturnTypeT;
+template<typename ReturnType>
+class Task
+{
 	using ResultType = Result<ReturnType>;
 	using TaskImplType = Details::TaskImpl<ReturnType>;
 
@@ -22,14 +19,14 @@ public:
 	{
 	}
 
-	template<typename ParamType>
+	template<typename Function>
 	__declspec(noinline)
 	explicit
-	Task(ParamType param)
+	Task(Function func)
 	{
-		Details::ValidateTaskConstructorArgs<ReturnType, ParamType>(param);
+		Details::ValidateTaskConstructorArgs<ReturnType, Function>(func);
 		m_impl = new TaskImplType{ GetDefaultScheduler() };
-		m_impl->ScheduleTask(new Details::TaskHandleImpl<ReturnType, ParamType>{ AddReference(m_impl), std::move(param) });
+		m_impl->ScheduleTask(new Details::InitialTaskHandle<ReturnType, Function>{ AddReference(m_impl), std::move(func) });
 	}
 
 	~Task()
@@ -61,6 +58,12 @@ public:
 	{
 		m_impl->Wait();
 		return m_impl->GetResult();
+	}
+
+	template<typename Function>
+	__declspec(noinline)
+	auto Then(Function&& func) const -> typename Details::ContinuationTypeTraits<Function, ReturnType>::TaskType
+	{
 	}
 
 private:
